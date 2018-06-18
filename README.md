@@ -1,5 +1,6 @@
-# Silver Plume Game (Adventures)
+# Silver Plume Game (Working Title)
 
+## This game is still under early development so may features are not yeat working.
 
 This web game is build on the Vue platform to experiment with using the framework as 
 an HTML 5 replacment for Scaleform UI. The project is component base and uses proper 
