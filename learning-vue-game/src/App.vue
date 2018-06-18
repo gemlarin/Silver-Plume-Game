@@ -32,6 +32,7 @@ export default {
       playerdamage:4,
       playermana:2,
       heal:5,
+      message:"hi"
       
     }
   },
@@ -52,6 +53,9 @@ export default {
      updateHeal() {
        healBus.$emit('playerHeal', this.heal)
      }
+  },
+  computed:{
+  
   },
   metaInfo: {
      meta: [

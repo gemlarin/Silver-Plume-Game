@@ -25,7 +25,7 @@ export default {
          totalarmorbonus: function () {
              return this.playerarmorbonus + this.playerarmor.bonus + this.playershield.bonus;
          }
-     }
+    }
 }
 </script>
 <style scoped>

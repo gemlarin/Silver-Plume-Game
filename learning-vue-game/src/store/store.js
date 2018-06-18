@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
     state:{
         armorrating: "",
         attackrating:"",
-        name: 'Dante',
+        name: 'Sir Dante',
+        playersex:'male',
         guardian: "Rah'tesh",
         weapon: {
             type:"Steel",
@@ -73,6 +74,14 @@ export const store = new Vuex.Store({
         newMana: 20,
         currentMana: 20,
         usedMana: 0
+    },
+    mutations:{
+        updateName (state, name) {
+            state.name = name
+        },
+        updateDiety (state, guardian) {
+            state.guardian = guardian
+        }
     },
     getters:{
        
