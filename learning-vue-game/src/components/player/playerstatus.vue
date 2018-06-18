@@ -1,8 +1,8 @@
 <template>
     <div class="wrap">
-        <p>Status: <span class="emphasize">{{playerStatus.imparement}}</span></p>
+        <p>Status: <span class="emphasize">{{this.$store.state.holdstat.imparement}}</span></p>
         <br />
-        <div class="effects" :key="index" v-for="(value, key, index) in playerStatus.effects">
+        <div class="effects" :key="index" v-for="(value, key, index) in this.$store.state.holdstat.effects">
         {{ key }}: <span class="emphasize">{{ value }}</span>
         </div>
     </div>
@@ -15,8 +15,7 @@
         return {
 
         }
-    },
-    props:['playerStatus']
+    }
     }
 </script>
 <style scoped>

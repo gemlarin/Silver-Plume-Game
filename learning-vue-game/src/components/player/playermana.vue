@@ -3,9 +3,9 @@
    <img class="teardrop" :src="require('./../../assets/player-raindrop-mana.svg')" />
   
    <div class="bar">
-      <label>{{ currentMana }} / 20</label>
+      <label>{{ this.$store.state.currentMana }} / 20</label>
       
-      <div class="bar--bottom"><div class="bar--top" v-bind:style="{ width: currentMana * 5  + 'px' }"></div></div>
+      <div class="bar--bottom"><div class="bar--top" v-bind:style="{ width: this.$store.state.currentMana * 5  + 'px' }"></div></div>
     </div>
     
 </div>
@@ -18,20 +18,18 @@ export default {
   name: 'playermana',
   data () {
     return {
-      newMana: 20,
-      currentMana: 20,
-      usedMana: 0
+ 
     }
   },  
   created(){
     manaBus.$on('usedMana', (data) =>{
-        this.usedMana = data;
-        this.currentMana = this.currentMana - this.usedMana;
-        if(this.currentMana > 20){
-            this.currentMana = 20;
+        this.$store.state.usedMana = data;
+        this.$store.state.currentMana = this.$store.state.currentMana - this.$store.state.usedMana;
+        if(this.$store.state.currentMana > 20){
+            this.$store.state.currentMana = 20;
         }
-        if(this.currentMana < 0){
-            this.currentMana = 0;
+        if(this.$store.state.currentMana < 0){
+            this.$store.state.currentMana = 0;
         }
     })
   },

@@ -6,16 +6,12 @@
                     <div class="col-6 col-sm-6 col-md-6">
                         <appPlayerhealth
                             :playerbonuses="bonuses"
-                            :playerstatus="holdstat"
+                            :playerstatus="this.$store.state.holdstat"
                         ></appPlayerhealth>
                     </div>
                     <div class="col-6 col-md-6 col-sm-6">
-                        <appPlayerfood
-                            :playerfood="food"
-                        ></appPlayerfood>
-                        <appPlayergold
-                            :playergold="gold">
-                        </appPlayergold>
+                        <appPlayerfood></appPlayerfood>
+                        <appPlayergold></appPlayergold>
                     </div>
                 </div>
                 <div class="row no-gutters">
@@ -23,9 +19,7 @@
                          <appPlayermana></appPlayermana>
                     </div>
                     <div class="col-md-6 col-sm-6">
-                        <appPlayerstatus
-                            :playerStatus="holdstat"
-                        ></appPlayerstatus>
+                        <appPlayerstatus></appPlayerstatus>
                     </div>
                 </div>
             </div>
@@ -39,15 +33,7 @@
                     </div><!-- /.card--section-avatar -->
                 </div>
                 <div class="col-md-7 col-sm-7">
-                    <appPlayerstats 
-                        :playername="name" 
-                        :playerguardian="guardian" 
-                        :playerweapon="weapon" 
-                        :playershield="shield" 
-                        :playerarmor="armor"
-                        :playerarmorrating="armorrating"
-                        :playerattackrating="atttackrating"
-                        >
+                    <appPlayerstats>
                     </appPlayerstats>
                 </div>
             </div>
@@ -77,76 +63,18 @@ export default {
     name: 'Dante',
     data: function(){
         return{
-            armorrating: "",
-            atttackrating:"",
-            name: 'Dante',
-            guardian: "Rah'tesh",
-            weapon: {
-                type:"Steel",
-                itemname:"Sword",
-                bonus:1
-            },
-            shield: {
-                type:"Steel",
-                itemname:"Shield",
-                bonus:1
-            },
-            armor: {
-                type:"Silver",
-                itemname:"Armor",
-                bonus:1
-            },
-            status: {
-                normal: {
-                    imparement:"normal",
-                    effects:{
-                        basehealth:20,
-                        armor:0,
-                        attack:0
-                    }
-                },
-                one: {
-                    imparement:"drunk",
-                    length:10,
-                    effects:{
-                        basehealth:20,
-                        armor:1,
-                        attack:-1
-                    }
-                },
-                two: {
-                    imparement:"poisoned",
-                    length:3000,
-                    effects:{
-                        basehealth:15,
-                        armor:0,
-                        attack:-1
-                    }
-                },
-                three: {
-                    imparement:"dizzy",
-                    length:10,
-                    effects:{
-                        basehealth:20,
-                        armor:-1,
-                        attack:-1
-                    }
-                }
-            },
-            food: 4,
-            gold:25,
-            //activestatus is the selected status modifier
-            activestatus:2,
-            //holdstat is the selected status object
-            holdstat:{}
-            
         }
+    },
+    computed: {
+        bonuses: function () {
+            return this.$store.state.armor.bonus + this.$store.state.shield.bonus 
+        }  
     },
     created: function () {
         //set status to normal on init
-        this.armorrating = this.status.normal.effects.armor + this.shield.bonus + this.armor.bonus;
-        this.atttackrating = this.weapon.bonus + this.status.normal.effects.attack
-        this.holdstat = this.status.normal
+        this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
+        this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
+        this.$store.state.holdstat = this.$store.state.status.normal
     },
     methods:{
         //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
@@ -154,38 +82,33 @@ export default {
         //update the player status - must set new activestatus before calling
         updateStatus: function(){
             //normal modifier
-           if(this.activestatus === 0){
-               this.armorrating = this.status.normal.effects.armor + this.shield.bonus + this.armor.bonus;
-               this.atttackrating = this.weapon.bonus + this.status.normal.effects.attack
-               this.holdstat = this.status.normal
+           if(this.$store.state.activestatus === 0){
+               this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
+               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
+               this.$store.state.holdstat = this.$store.state.status.normal
            }
            //drunk modifier
-           if(this.activestatus === 1){
-               this.armorrating= this.status.one.effects.armor + this.shield.bonus + this.armor.bonus;
-               this.atttackrating = this.weapon.bonus + this.status.one.effects.attack
-               this.holdstat = this.status.one
+           if(this.$store.state.activestatus === 1){
+               this.$store.state.armorrating= this.$store.state.status.one.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
+               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.one.effects.attack
+               this.$store.state.holdstat = this.$store.state.status.one
            }
            //poisoned modifier
-           if(this.activestatus === 2){
-               this.armorrating = this.status.two.effects.armor + this.shield.bonus + this.armor.bonus;
-               this.atttackrating = this.weapon.bonus + this.status.two.effects.attack
-               this.holdstat = this.status.two
+           if(this.$store.state.activestatus === 2){
+               this.$store.state.armorrating = this.$store.state.status.two.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
+               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.two.effects.attack
+               this.$store.state.holdstat = this.$store.state.status.two
            }
            //dizzy modifier
-           if(this.activestatus === 3){
-               this.armorrating = this.status.three.effects.armor + this.shield.bonus + this.armor.bonus;
-               this.atttackrating = this.weapon.bonus + this.status.three.effects.attack
-               this.holdstat = this.status.three
+           if(this.$store.state.activestatus === 3){
+               this.$store.state.armorrating = this.$store.state.status.three.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
+               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.three.effects.attack
+               this.$store.state.holdstat = this.$store.state.status.three
            }
               
         }
     },
-    computed: {
- 
-        bonuses: function () {
-            return this.armor.bonus + this.shield.bonus 
-        }
-    },
+
     components: {
         appPlayerhealth:   playerhealth,
         appPlayermana:     playermana,

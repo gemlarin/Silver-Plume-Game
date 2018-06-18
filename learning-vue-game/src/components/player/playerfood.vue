@@ -1,7 +1,7 @@
 <template>
 <div class="wrap">
     <img class="food" :src="require('./../../assets/player-food.svg')" />
-    <label>{{ playerfood }}</label>
+    <label>{{ this.$store.state.food }}</label>
 </div>
 </template>
 
@@ -11,10 +11,9 @@ export default {
   name: 'playerfood',
   data () {
     return {
-      food: 5
+    
     }
-  },
-  props:['playerfood']
+  }
 }
 </script>
 <style scoped>

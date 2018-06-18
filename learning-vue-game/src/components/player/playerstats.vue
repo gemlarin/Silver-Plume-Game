@@ -1,13 +1,13 @@
 <template>
     <div class="wrap-stats">
-        <h5>Name: <span class="font--mod-bold">{{ playername }}</span></h5>
-        <h5>Guardian: <span class="font--mod-bold">{{ playerguardian }}</span></h5>
+        <h5>Name: <span class="font--mod-bold">{{ this.$store.state.name }}</span></h5>
+        <h5>Guardian: <span class="font--mod-bold">{{ this.$store.state.guardian }}</span></h5>
         <br>
-        <h5>Weapon: <span class="font--mod-bold">{{ playerweapon.type }} {{ playerweapon.itemname }} <span class="emphasize" :v-show="playerweapon.bonus"> +{{ playerweapon.bonus}}</span></span></h5>
-        <h5>Shield: <span class="font--mod-bold">{{ playershield.type }} {{ playershield.itemname }}<span class="emphasize" :v-if="playershield.bonus"> +{{ playershield.bonus}}</span></span></h5>
-        <h5>Armor: <span class="font--mod-bold">{{ playerarmor.type }} {{ playerarmor.itemname }}<span class="emphasize" :v-if="playerarmor.bonus"> +{{ playerarmor.bonus}}</span></span></h5>
-        <h5>Armor Rating: <span class="font--mod-bold emphasize"> +{{ playerarmorrating }}</span></h5>
-        <h5>Attack Rating: <span class="font--mod-bold emphasize"> +{{ playerattackrating }}</span></h5>
+        <h5>Weapon: <span class="font--mod-bold">{{ this.$store.state.weapon.type }} {{ this.$store.state.weapon.itemname }} <span class="emphasize" :v-show="this.$store.state.weapon.bonus"> +{{ this.$store.state.weapon.bonus}}</span></span></h5>
+        <h5>Shield: <span class="font--mod-bold">{{ this.$store.state.shield.type }} {{ this.$store.state.shield.itemname }}<span class="emphasize" :v-if="this.$store.state.shield.bonus"> +{{ this.$store.state.shield.bonus}}</span></span></h5>
+        <h5>Armor: <span class="font--mod-bold">{{ this.$store.state.armor.type }} {{ this.$store.state.armor.itemname }}<span class="emphasize" :v-if="this.$store.state.armor.bonus"> +{{ this.$store.state.armor.bonus}}</span></span></h5>
+        <h5>Armor Rating: <span class="font--mod-bold emphasize"> +{{ this.$store.state.armorrating }}</span></h5>
+        <h5>Attack Rating: <span class="font--mod-bold emphasize"> +{{ this.$store.state.attackrating }}</span></h5>
 
     </div>
 </template>
@@ -16,7 +16,6 @@
 
 export default {
   name: 'playerstats',
-  props: ['playername', 'playerguardian', 'playerweapon', 'playershield', 'playerarmor', 'playergold', 'playerfood', 'playerarmorrating', 'playerattackrating'],
   data () {
     return {
         
