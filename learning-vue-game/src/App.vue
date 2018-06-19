@@ -156,6 +156,13 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       font-weight: 700;
       margin:0 0 10px 0;
       outline: none;
+      margin-bottom:10px;
+  }
+
+  button.btn--alt-red{
+    background-color: #a73434;
+    border-color: #dedede;
+    color:#fff;
   }
 
   .btn{

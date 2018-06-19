@@ -42,6 +42,11 @@
                     <appPlayeractions></appPlayeractions>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <appPlayeractionsupdater></appPlayeractionsupdater>
+                </div>
+            </div>
         </div><!-- /.card -->
         <br><br>
            <button @click="updateStatus">Update Status</button>
@@ -58,6 +63,7 @@ import playergold    from './playergold'
 import playerstatus  from './playerstatus'
 import playerstats   from './playerstats'
 import playeractions from './playeractions'
+import playeractionsupdater from './playersactionupdater'
 
 export default {
     name: 'Dante',
@@ -116,7 +122,8 @@ export default {
         appPlayergold:     playergold,
         appPlayerstatus:   playerstatus,
         appPlayerstats:    playerstats,
-        appPlayeractions:  playeractions
+        appPlayeractions:  playeractions,
+        appPlayeractionsupdater:  playeractionsupdater
     },
 }
 </script>

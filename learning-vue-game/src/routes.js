@@ -10,10 +10,10 @@ import P12     from './components/dialog/chapter_one/p_12.vue'
 
 export const routes = [
     { path: '*', component: PageNotFound },
-    { path: '/init', component: PlayerInit},
+    { path: '/', component: PlayerInit},
     { path: '/instructions', component: Instructions },
     { path: '/instructions2', component: Instructions2 },
-    { path: '', component: Intro},
+    { path: '/intro_1', component: Intro},
     { path: '/intro_2', component: Intro2},
     { path: '/intro_3', component: Intro3},
     { path: '/p_11', component: P11},

@@ -20,14 +20,14 @@
                                     <li>Armor Rating: Your combined armor rating includes all armor ratings plus any bonuses or banes applied to your player status.</li>
                                     <li>Attack Rating: Your combined attack rating includes your weapon rating plus any bonuses or banes applied to your player status.</li>
                                 </ul>
+                                 <div class="options-nav">
+                                    <router-link to="/intro_1">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block">Adventure Awaits!
+                                        </button>
+                                    </router-link>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="options-nav">
-                        <router-link to="/p_12">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Approach the mouth of the valley.
-                            </button>
-                        </router-link>
                     </div>
                 </div>
             </div>
