@@ -23,7 +23,7 @@ export default {
   },  
   props:['playerbonuses', 'playerstatus'],
   computed:{
-    //determine if basehealth mod exists, if not, set to maxhealth
+    //determine if basehealth mod (like poison status) exists, if not, set to maxhealth
     basehealth: function(){
        if(this.$store.state.holdstat.effects.basehealth){
          var temphealth = this.$store.state.holdstat.effects.basehealth
@@ -38,7 +38,7 @@ export default {
     }
   },
   created(){
-    //need to set the base stats on load
+    //need to set the base life
     lifeBus.$on('newDamage', (data) =>{
       this.$store.state.newDamage = data;
       this.$store.state.currentHealth = this.$store.state.currentHealth - (this.$store.state.newDamage - this.playerstatus.effects.armor) + this.playerbonuses;

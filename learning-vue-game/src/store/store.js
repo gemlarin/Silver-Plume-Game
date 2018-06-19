@@ -67,7 +67,7 @@ export const store = new Vuex.Store({
         gold:25,
         //activestatus is the selected status modifier
         activestatus:2,
-        //holdstat is the selected status object
+        //holdstat is the selected status object. It contains the current status effects and impairment
         holdstat:{},
         maxhealth:20,
         newDamage: 0,
@@ -88,6 +88,12 @@ export const store = new Vuex.Store({
         updateTurnsLog (state, text) {
             state.turns.unshift(text);
         },
+        updateArmorRating (state, armorrating) {
+            state.armorrating = armorrating;
+        },
+        updateAttackRating (state, attackrating) {
+            state.armorrating = attackrating;
+        }
         
     },
     getters:{
