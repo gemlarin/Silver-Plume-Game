@@ -39,7 +39,10 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <appPlayeractions></appPlayeractions>
+                    <appPlayeractions
+                      :playerbonuses="bonuses"
+                      :playerstatus="this.$store.state.holdstat">
+                    </appPlayeractions>
                 </div>
             </div>
             <div class="row">
@@ -77,7 +80,7 @@ export default {
         }  
     },
     created: function () {
-        //set status to normal on init
+        //Need to initialize the hero values
         this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
         this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
         this.$store.state.holdstat = this.$store.state.status.normal
@@ -85,7 +88,7 @@ export default {
     methods:{
         //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
 
-        //update the player status - must set new activestatus before calling
+        //Important: set the activestatus before calling updatestatus
         updateStatus: function(){
             //normal modifier
            if(this.$store.state.activestatus === 0){

@@ -27,8 +27,9 @@ export default {
     basehealth: function(){
        if(this.$store.state.holdstat.effects.basehealth){
          var temphealth = this.$store.state.holdstat.effects.basehealth
-         this.$store.state.currentHealth = temphealth;
-        
+         if(this.$store.state.currentHealth >= temphealth){
+            this.$store.state.currentHealth = temphealth;
+         }
          return temphealth
        }
        else{
@@ -37,6 +38,7 @@ export default {
     }
   },
   created(){
+    //need to set the base stats on load
     lifeBus.$on('newDamage', (data) =>{
       this.$store.state.newDamage = data;
       this.$store.state.currentHealth = this.$store.state.currentHealth - (this.$store.state.newDamage - this.playerstatus.effects.armor) + this.playerbonuses;

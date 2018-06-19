@@ -3,7 +3,6 @@
       <div class="row">
         <div class="col-md-5">
           <appPlayer v-show='isOpen'></appPlayer>
-          <button class="btn btn-primary" @click="updateHealth">HIT</button>
           <button class="btn btn-primary" @click="updateMana">MANA</button>
           <button class="btn btn-primary" @click="updateHeal">HEAL</button>
           <button class="btn btn-primary" @click='toggle()'>Open/Close</button>
@@ -41,15 +40,15 @@ export default {
     appDialog: DialogBox,
   },
   methods:{
+    //temporary: remove after dev. using to hide component during build.
      toggle(){
         this.isOpen = !this.isOpen
       },
-     updateHealth() {
-       lifeBus.$emit('newDamage', this.playerdamage)
-     },
+      //temporary: remove after the manaBus is properly set up in the game logic
      updateMana() {
        manaBus.$emit('usedMana', this.playermana)
      },
+      //temporary: remove after the healBus is properly set up in the game logic
      updateHeal() {
        healBus.$emit('playerHeal', this.heal)
      }
@@ -58,14 +57,12 @@ export default {
   
   },
   metaInfo: {
-     meta: [
-      { title: 'Kickbutt App'},
-      { titleTemplate: '%s | My Awesome Webapp'},
-      { charset: 'utf-8' },
-      { name: 'description', content: 'foo' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1'},
-      { name: 'keywords', content: 'this, that, somethingelse'}
-    ]
+      title: 'The Silver Plume', // set a title
+      titleTemplate: '%s - Yay!', // title is now "My Example App - Yay!"
+      htmlAttrs: {
+        lang: 'en',
+        amp: undefined // "amp" has no value
+      }
     }
 }
 </script>
@@ -99,7 +96,6 @@ html{
   padding: 30px 20px 20px 15px;
   margin: 10px 20px 0 0;
   position:relative;
-
   //background-color: #f3f2f0;
   //  border-radius: 15px;
 }
@@ -115,7 +111,6 @@ h1, h2 {
   font-size:2.7em;
   margin-bottom:20px;
 }
-
 
 ul {
   list-style-type: none;
@@ -145,7 +140,7 @@ a {
 
 .btn-primary:hover{
   color: #828282;
-      border-color: #dedede;
+  border-color: #dedede;
 }
 
 button, html [type="button"], [type="reset"], [type="submit"]{

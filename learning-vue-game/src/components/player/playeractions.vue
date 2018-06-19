@@ -2,13 +2,11 @@
     <div class="wrap--playeractions">
        <div class="row flex--buttons">
        
-               <button class="button--style-alt"><div class="attack"><img class="avatar" :src="require('./../../assets/player-button-attack.svg')" /></div>Attack</button>
+               <button class="button--style-alt" @click="updateHealth"><div class="attack"><img class="avatar" :src="require('./../../assets/player-button-attack.svg')" /></div>Attack</button>
                <button class="button--style-alt">Magic</button>
 
-   
                <button class="button--style-alt">Search</button>
                <button class="button--style-alt">Eat</button>
-       
                 <button
                     @click="isPrayDisabled"
                     :disabled="praydisabled" 
@@ -23,23 +21,46 @@
 </template>
 
 <script>
+import { lifeBus } from './../../main.js';
 
 export default {
   name: 'playeractions',
+  props:['playerbonuses', 'playerstatus'],
   data () {
     return {
         condition:'none',
-        praydisabled: false
+        praydisabled: false,
+        adjustedDamage:0
     }
   },
   computed: {
-        
+   
     },
     methods:{
+        
+        updateHealth() {
+            //temp: to be removed: randomize a damage value from monster hit
+             this.$store.state.monsterHitDamage = Math.floor(Math.random() * 6) + 1;
+             //update the lifeBus listeners
+             lifeBus.$emit('newDamage', this.$store.state.monsterHitDamage);
+             //here we need to know the damage to apply to hero after armor and bonuses are factored in
+             this.adjustedDamage = this.$store.state.newDamage - (this.playerstatus.effects.armor + this.playerbonuses);
+             //sometimes the adjustment is a negative value. This equates to 0 damage.
+             if(this.adjustedDamage < 0){
+                 this.adjustedDamage = 0;
+             }
+             console.log("monster damage:", this.$store.state.monsterHitDamage)
+             console.log('adjusted damage to hero:', this.adjustedDamage);
+             //we need to concatonate the status message before sending to the store
+             var message = "Monster hits player for " + this.adjustedDamage + " damage!"
+             this.$store.commit('updateTurnsLog', message)
+        },
+        //toggle praydisabled on the pray button
         isPrayDisabled: function(){
             this.startPrayTimer();
             return this.praydisabled = !this.praydisabled;
         },
+        //3600000 is the equal to 1 hour so we can disable the pray button for an hour between use
         startPrayTimer: function(){
             setTimeout(() => {
                 this.praydisabled = false;

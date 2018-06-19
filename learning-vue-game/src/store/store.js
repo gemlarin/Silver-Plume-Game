@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state:{
+        turns:[],
         armorrating: "",
         attackrating:"",
         name: 'Sir Dante',
@@ -71,9 +72,11 @@ export const store = new Vuex.Store({
         maxhealth:20,
         newDamage: 0,
         currentHealth:20,
+        adjustedDamage:0,
         newMana: 20,
-        currentMana: 20,
-        usedMana: 0
+        currentMana: 10,
+        usedMana: 0,
+        monsterHitDamage:4
     },
     mutations:{
         updateName (state, name) {
@@ -81,7 +84,11 @@ export const store = new Vuex.Store({
         },
         updateDiety (state, guardian) {
             state.guardian = guardian
-        }
+        },
+        updateTurnsLog (state, text) {
+            state.turns.unshift(text);
+        },
+        
     },
     getters:{
        
