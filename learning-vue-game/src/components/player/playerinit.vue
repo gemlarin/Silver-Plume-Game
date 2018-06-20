@@ -73,25 +73,26 @@ export default {
 </script>
 <style scoped>
 
+
 a{
     text-decoration: none;
     outline: none;
 }
 p{
-    font-family: 'Sura', serif;
+    font-family: 'Zilla Slab', serif;
     color:#5f5f5f;
 }
 h1{
     color:#ab4646;
 }
 label{
-  font-family: 'Kurale', serif;
+  font-family: 'Zilla Slab', serif;
   font-size:15px;
   color:#ab4646;
 }
 
 input{
-  font-family: 'Sura', serif;
+  font-family: 'Kurale', serif;
   width:100%;
   height:40px;
   font-size:18px;

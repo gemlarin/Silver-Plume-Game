@@ -40,8 +40,15 @@ export default {
   created(){
     //need to set the base life
     lifeBus.$on('newDamage', (data) =>{
-      this.$store.state.newDamage = data;
-      this.$store.state.currentHealth = this.$store.state.currentHealth - (this.$store.state.newDamage - this.playerstatus.effects.armor) + this.playerbonuses;
+      this.$store.state.newDamage = data.damage;
+      if(!data.isFood){
+        console.log('not food')
+        this.$store.state.currentHealth = this.$store.state.currentHealth - (this.$store.state.newDamage - this.playerstatus.effects.armor) + this.playerbonuses;
+      }
+      if(data.isFood){
+        console.log('is food')
+        this.$store.state.currentHealth = this.$store.state.currentHealth + this.$store.state.newDamage;
+      }
       if(this.$store.state.currentHealth > this.$store.state.maxhealth){
         this.$store.state.currentHealth = this.$store.state.maxhealth;
       }

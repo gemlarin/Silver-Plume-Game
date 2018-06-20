@@ -3,12 +3,15 @@
       <div class="row log">
           <div class="col-12 columns">
               <ul>
-                  <li v-for="turn in this.$store.state.turns"> > {{ turn }}</li>
+                  <li 
+                  v-for="(turn,index) in this.$store.state.turns"
+                  :key="index"
+                  :class="{'player-turn': turn.isPlayer,'monster-turn': !turn.isPlayer}">
+                  {{ turn.message }}
+                  </li>
               </ul>
           </div>
       </div>
-          
-       
     </div>
 </template>
 
@@ -20,13 +23,7 @@ export default {
     return {
   
     }
-  },
-  computed: {
-        
-    },
-    methods:{
-       
-    }
+  }
 }
 </script>
 <style scoped>
@@ -36,7 +33,7 @@ export default {
 }
 
 li{
-    font-family: 'Sura', serif;
+    font-family: 'Kurale', serif;
     display:block;
     color:#fff;
     font-size:14px;
@@ -46,16 +43,18 @@ li{
 }
 
 .log{
-    height:170px;
-    padding-top:20px;
+    height:140px;
+    margin-top:15px;
+    padding-left:30px;
+    overflow:scroll;
 }
 
 .wrap--playeractionsupdater{
     background-color:#3f3e3f;
     margin-top:7px;
-    padding:0 15px;
+    padding:10px 15px;
     height:200px;
-    overflow:scroll;
+     overflow:scroll;
 }
    
 p{
@@ -67,6 +66,14 @@ p{
 img{
     height:20px;
     width:auto;
+}
+
+.log ul .player-turn{
+    color:orange;
+}
+
+.log ul .monster-turn{
+    color:red;
 }
     
 </style>

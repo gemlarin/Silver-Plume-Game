@@ -30,9 +30,7 @@ export default {
       isOpen:true,
       playerdamage:4,
       playermana:2,
-      heal:5,
-      message:"hi"
-      
+      heal:5
     }
   },
   components: {
@@ -73,7 +71,7 @@ $text-color-light:lightgrey;
 
 
 #app {
-   @import url("https://fonts.googleapis.com/css?family=Kurale|Sura");
+   @import url("https://fonts.googleapis.com/css?family=Kurale|Zilla+Slab");
   font-family: 'Kurale', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -102,14 +100,27 @@ html{
 
 
 p{
-  font-size:1.7rem;
+  font-size:1.8rem;
   display:block;
 }
 
 h1, h2 {
   font-weight: normal;
-  font-size:2.7em;
   margin-bottom:20px;
+}
+h1{
+  font-size:2.7em;
+}
+h2{
+  font-size:2.4em;
+  color:#878881;
+}
+h3{
+  color:#ab4646;
+  font-size:1.7em;
+  font-weight:700;
+  margin-bottom:15px;
+  margin-top:25px;
 }
 
 ul {
@@ -152,12 +163,11 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       margin:0 0 10px 0;
       outline: none;
       margin-bottom:10px;
-  }
-
-  button.btn--alt-red{
-    background-color: #a73434;
-    border-color: #dedede;
-    color:#fff;
+      //button border fix for safari
+      border-top-style: normal;
+      border-right-style: normal;
+      border-bottom-style: normal;
+      border-left-style: normal;
   }
 
   .btn{
@@ -195,5 +205,30 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       background: linear-gradient(to bottom, #ffffff 0%,#f7f7f7 10%,#ffffff 91%,#efefef 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
     }
+
+    button.btn--alt-red{
+      background: #a73434;
+      border-color: #dedede;
+      color:#fff;
+  }
+
+
+    button.btn--alt-red:hover{
+      background: #b13c3c;
+      border-color: #dedede;
+      color:#fff;
+      text-shadow: 1px 1px #4b4b4b;
+    }
+
+    button.btn--alt-red:not(:disabled):not(.disabled):active, button.btn--alt-red:not(:disabled):not(.disabled).active, .show > button.btn--alt-red.dropdown-toggle {
+      color:#fff;
+    }
+
+     button.btn--alt-red:not(:disabled):not(.disabled):active, button.btn--alt-red:not(:disabled):not(.disabled).active, .show > button.btn--alt-red.dropdown-toggle {
+      background: #ca4242;
+      border-color: #dedede;
+      text-shadow: 1px 1px #4b4b4b;
+  }
+
 
 </style>

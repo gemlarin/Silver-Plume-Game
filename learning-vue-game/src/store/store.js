@@ -5,7 +5,10 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state:{
-        turns:[],
+        turns:[{
+            isPlayer:true,
+            message:''
+        }],
         armorrating: "",
         attackrating:"",
         name: 'Sir Dante',
@@ -69,14 +72,20 @@ export const store = new Vuex.Store({
         activestatus:2,
         //holdstat is the selected status object. It contains the current status effects and impairment
         holdstat:{},
-        maxhealth:20,
-        newDamage: 0,
-        currentHealth:20,
-        adjustedDamage:0,
-        newMana: 20,
-        currentMana: 10,
-        usedMana: 0,
-        monsterHitDamage:4
+        maxhealth:20, //max health allowed
+        newDamage: 0, //amount of incoming damage
+        currentHealth:20, //self explainatory
+        adjustedDamage:0, //incoming damage after armor and mods
+        condition:'none', //status condition
+        praydisabled: false, //pray toggle
+        newMana: 20, //starting mana
+        currentMana: 20, //self explainatory
+        usedMana: 0, //amount of mana used by spell
+        monster:{
+            monsterHitDamage:4,
+            monsterHealth:10,
+            monstername:'Sailor'
+        }
     },
     mutations:{
         updateName (state, name) {

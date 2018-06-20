@@ -4,6 +4,7 @@
             <div class="row">
                 <div class="col-12">
                     <h1>How to Play</h1>
+                    <img class="teardrop" :src="require('./../../assets/lion-crest.png')" />
                     <hr>
                         <div class="row">
                             <div class="col-12">
@@ -47,22 +48,26 @@ export default {
 }
 </script>
 <style scoped>
-
 a{
     text-decoration: none;
     outline: none;
 }
+img{
+    height:50px;
+    width:auto;
+    position:absolute;
+    right:20px;
+    top:-10px;
+    opacity:.3;
+}
 p{
-    font-family: 'Sura', serif;
+    font-family: 'Zilla Slab', serif;
     color:#5f5f5f;
 }
 ul li {
-    font-family: 'Sura', serif;
+    font-family: 'Zilla Slab', serif;
     color:#5f5f5f;
     font-size:1.7em;
-}
-span{
-    font-weight:700;
 }
 h1{
     color:#ab4646;
@@ -83,6 +88,10 @@ input{
   border-radius:3px;
   border:1px solid #dddddd;
 }  
+
+.hline{
+    display:relative;
+}
 
 .field-wrap{
     margin-top:30px;

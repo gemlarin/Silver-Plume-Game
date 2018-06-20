@@ -1,8 +1,8 @@
 <template>
     <div class="wrap">
-    <div class="ornament--left"><img class="avatar" :src="require('./../../assets/left-ornament.svg')" /></div>
+    <!--<div class="ornament--left"><img class="avatar" :src="require('./../../assets/left-ornament.svg')" /></div>-->
     <router-view></router-view>
-    <div class="ornament--right"><img class="avatar" :src="require('./../../assets/right-ornament.svg')" /></div>
+    <!--<div class="ornament--right"><img class="avatar" :src="require('./../../assets/right-ornament.svg')" /></div>-->
     </div>
 </template>
 

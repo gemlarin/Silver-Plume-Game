@@ -138,8 +138,8 @@ export default {
     .card{
         height:100%;
         display:flex;
-        border:8px solid #ffffff;
-        background-color:#ffffff;
+        border:8px solid #2f2f2f;
+        background-color:#2f2f2f;
         position:relative;
 
     }

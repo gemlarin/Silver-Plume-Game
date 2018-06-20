@@ -6,16 +6,15 @@
                <button class="button--style-alt">Magic</button>
 
                <button class="button--style-alt">Search</button>
-               <button class="button--style-alt">Eat</button>
+               <button class="button--style-alt" @click="eatFood">Eat</button>
                 <button
                     @click="isPrayDisabled"
-                    :disabled="praydisabled" 
-                    :class="{ disabled: praydisabled }"
+                    :disabled="this.$store.state.praydisabled" 
+                    :class="{ disabled: this.$store.state.praydisabled }"
                     class="button--style-alt">
                     Pray
                 </button>
-                <button disabled class="button--style-alt">Bag</button>
-          
+                <button disabled class="button--style-alt">Bag</button> 
        </div>
     </div>
 </template>
@@ -28,42 +27,45 @@ export default {
   props:['playerbonuses', 'playerstatus'],
   data () {
     return {
-        condition:'none',
-        praydisabled: false,
-        adjustedDamage:0
+      
     }
   },
-  computed: {
-   
-    },
     methods:{
+        eatFood() {
+            lifeBus.$emit('newDamage', {'damage': 5, 'isFood': true});
+        },
         
         updateHealth() {
             //temp: to be removed: randomize a damage value from monster hit
-             this.$store.state.monsterHitDamage = Math.floor(Math.random() * 6) + 1;
+             this.$store.state.monster.monsterHitDamage = Math.floor(Math.random() * 6) + 1;
              //update the lifeBus listeners
-             lifeBus.$emit('newDamage', this.$store.state.monsterHitDamage);
+             lifeBus.$emit('newDamage', {'damage': this.$store.state.monster.monsterHitDamage, 'isFood': false});
              //here we need to know the damage to apply to hero after armor and bonuses are factored in
-             this.adjustedDamage = this.$store.state.newDamage - (this.playerstatus.effects.armor + this.playerbonuses);
+             this.$store.state.adjustedDamage = this.$store.state.newDamage - (this.playerstatus.effects.armor + this.playerbonuses);
              //sometimes the adjustment is a negative value. This equates to 0 damage.
-             if(this.adjustedDamage < 0){
-                 this.adjustedDamage = 0;
+             if(this.$store.state.adjustedDamage < 0){
+                 this.$store.state.adjustedDamage = 0;
              }
-             console.log("monster damage:", this.$store.state.monsterHitDamage)
-             console.log('adjusted damage to hero:', this.adjustedDamage);
-             //we need to concatonate the status message before sending to the store
-             var message = "Monster hits player for " + this.adjustedDamage + " damage!"
-             this.$store.commit('updateTurnsLog', message)
+             console.log("monster damage:", this.$store.state.monster.monsterHitDamage)
+             console.log('adjusted damage to hero:', this.$store.state.adjustedDamage);
+             this.updateMessage();
+             
+             
+        },
+        updateMessage(){
+            //we need to concatonate the status message before sending to the store
+            var message =  this.$store.state.monster.monstername + " hits " + this.$store.state.name + " for " + this.$store.state.adjustedDamage + " damage!"
+            this.$store.commit('updateTurnsLog', {message, isPlayer:true})
         },
         //toggle praydisabled on the pray button
         isPrayDisabled: function(){
             this.startPrayTimer();
-            return this.praydisabled = !this.praydisabled;
+            return this.$store.state.praydisabled = !this.$store.state.praydisabled;
         },
         //3600000 is the equal to 1 hour so we can disable the pray button for an hour between use
         startPrayTimer: function(){
             setTimeout(() => {
-                this.praydisabled = false;
+                this.$store.state.praydisabled = false;
             }, 3600000)
         }
     }
@@ -81,16 +83,12 @@ export default {
     padding:0 15px;
 }
    
-p{
-    font-size:14px;
-
-}
 
 button, html [type="button"], [type="reset"], [type="submit"]{
       background-color: white;
       border-color: #333333;
       color: #828282;
-      font-size: 16px;
+      font-size: 1px;
       font-weight: 700;
       margin:0 0 10px 0;
       outline: none;
@@ -108,7 +106,7 @@ button{
     color: #e0e0e0;
     font-weight: bold;
     width: 33.3333%;
-    height: 70px;
+    height: 50px;
     line-height: 30px;
     border-radius: 0;
     text-align: center;
@@ -117,8 +115,12 @@ button{
     outline: none;
     cursor: pointer;
     position:relative;
+    text-shadow: 1px 1px #1b1b1b;
 }
 
+.button--style-alt{
+    font-size:17px;
+  }
 
 button:hover{
     outline: none;
@@ -126,16 +128,20 @@ button:hover{
 }
 
 button:active{
-
+background-color: #525252;
+    border:transparent;
     outline: none;
+    z-index:100;
+    position:relative;
 }
 
-button.disabled{
 
+button:disabled, button.disabled{
     border: solid 2px rgb(56, 58, 55);
     background: #424242;
     color: #827d7d;
 }
+
 
 .flex--buttons{
 display: flex;

@@ -9,6 +9,7 @@ import P11     from './components/dialog/chapter_one/p_11.vue'
 import P12     from './components/dialog/chapter_one/p_12.vue'
 
 export const routes = [
+    { path: '*/index.html', component: PlayerInit },
     { path: '*', component: PageNotFound },
     { path: '/', component: PlayerInit},
     { path: '/instructions', component: Instructions },
