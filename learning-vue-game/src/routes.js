@@ -1,4 +1,5 @@
 import PageNotFound from './components/gamedata/404.vue'
+import Inventory from './components/dialog/inventory.vue'
 import PlayerInit from './components/player/playerinit.vue'
 import Instructions from './components/player/playerinstructions.vue'
 import Instructions2 from './components/player/playerinstructions2.vue'
@@ -11,6 +12,7 @@ import P12     from './components/dialog/chapter_one/p_12.vue'
 export const routes = [
     { path: '*/index.html', component: PlayerInit },
     { path: '*', component: PageNotFound },
+    { path: '/inventory', component: Inventory },
     { path: '/', component: PlayerInit},
     { path: '/instructions', component: Instructions },
     { path: '/instructions2', component: Instructions2 },

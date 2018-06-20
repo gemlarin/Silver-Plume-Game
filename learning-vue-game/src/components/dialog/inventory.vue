@@ -3,17 +3,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1>The Valley.</h1>
-                    <img class="teardrop" :src="require('./../../../assets/lion-crest.png')" />
+                    <h1>Inventory</h1>
                     <hr>
-                    <p>
-                        
-                    </p>
-                    <div class="options-nav">
-                        <router-link to="/p_12">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Approach the mouth of the valley.
-                            </button>
-                        </router-link>
+                   
+                    <img class="teardrop" :src="require('./../../assets/lion-crest.png')" />
+                
+                    <div class="options-nav"> 
+                        <button type="button" @click="goback" class="btn btn-primary btn-lg btn-block">Close bag
+                        </button>
                     </div>
                 </div>
             </div>
@@ -23,16 +20,23 @@
 
 <script>
     export default {
-        name: 'p_11',
+        name: 'inventory',
             data () {
                 return {
-
+            
+                }
+            },
+            methods:{
+                //allows us to return to the previous view when the inventory is closed
+                goback: function(){
+                    this.$router.go(-1);
                 }
             }
     }
 </script>
 <style scoped>
-  a{
+  
+a{
     text-decoration: none;
     outline: none;
 }
@@ -80,4 +84,5 @@ input{
 .field-wrap{
     margin-top:30px;
 }
+
 </style>

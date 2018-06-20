@@ -14,7 +14,10 @@
                     class="button--style-alt">
                     Pray
                 </button>
-                <button disabled class="button--style-alt">Bag</button> 
+                <router-link to="/inventory">
+                    <button class="button--style-alt routerlink">Bag
+                    </button>
+                </router-link>
        </div>
     </div>
 </template>
@@ -82,9 +85,8 @@ export default {
     margin-top:7px;
     padding:0 15px;
 }
-   
 
-button, html [type="button"], [type="reset"], [type="submit"]{
+a,button, html [type="button"], [type="reset"], [type="submit"]{
       background-color: white;
       border-color: #333333;
       color: #828282;
@@ -99,7 +101,7 @@ button, html [type="button"], [type="reset"], [type="submit"]{
     -webkit-box-sizing: border-box;
   }
 
-button{
+a,button{
     display: block;
     text-decoration: none;
     background: #424242;
@@ -118,11 +120,15 @@ button{
     text-shadow: 1px 1px #1b1b1b;
 }
 
-.button--style-alt{
+button.routerlink{
+    width:100%;
+}
+
+a, .button--style-alt{
     font-size:17px;
   }
 
-button:hover{
+a:hover, button:hover{
     outline: none;
     background: #545454;
 }
