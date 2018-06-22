@@ -6,7 +6,7 @@
                   <li 
                   v-for="(turn,index) in this.$store.state.turns"
                   :key="index"
-                  :class="{'player-turn': turn.isPlayer,'monster-turn': !turn.isPlayer}">
+                  :class="{'player-turn': turn.isPlayer,'monster-turn': !turn.isPlayer,'heal-turn': turn.isHeal}">
                   {{ turn.message }}
                   </li>
               </ul>
@@ -33,10 +33,10 @@ export default {
 }
 
 li{
-    font-family: 'Kurale', serif;
+    font-family: 'Zilla Slab', serif;
     display:block;
     color:#fff;
-    font-size:14px;
+    font-size:15px;
     white-space:normal;
     margin-bottom:10px;
     line-height:1.2em;
@@ -45,12 +45,12 @@ li{
 .log{
     height:140px;
     margin-top:15px;
-    padding-left:30px;
+    padding-left:15px;
     overflow:scroll;
 }
 
 .wrap--playeractionsupdater{
-    background-color:#3f3e3f;
+    background-color:#2b2b2b;
     margin-top:7px;
     padding:10px 15px;
     height:200px;
@@ -70,10 +70,23 @@ img{
 
 .log ul .player-turn{
     color:orange;
+    
 }
 
 .log ul .monster-turn{
-    color:red;
+    font-family: 'Zilla Slab', serif;
+    color:rgb(255, 18, 91);
+    font-weight:700;
+}
+
+.log ul .player-turn{
+    color:rgb(255, 193, 22);
+    font-weight:700;
+}
+
+.log ul .heal-turn{
+    color:rgb(40, 245, 40);
+  font-weight:700;
 }
     
 </style>

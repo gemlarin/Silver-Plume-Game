@@ -73,6 +73,7 @@
                     if(this.hiddenItem.foundItem == false){
                         if(successInt == 1){
                         this.hiddenItem.foundItem = true;
+                        //listener is located in App.vue
                         itemBus.$emit('newItem', {'item': this.hiddenItem.itemName, 'itemID':this.hiddenItem.itemID});
                         //let message = this.hiddenItem.revealText
                         this.revealOption = data.isSearched;

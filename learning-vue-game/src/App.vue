@@ -58,7 +58,6 @@ export default {
   created() {
     itemBus.$on('newItem', (data) =>{
       this.$store.commit('itemFound', {'item':data.item, 'itemID':data.itemID});
-      alert(data.item + ',' + data.itemID)
     });
   },
   metaInfo: {

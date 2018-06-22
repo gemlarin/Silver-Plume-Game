@@ -28,16 +28,17 @@
 
 <script>
     import { searchBus } from './../../../main.js';
+    import { itemBus } from './../../../main.js';
     export default {
-        name: 'p_11',
+        name: 'p_12',
             data () {
                 return {
                     roomID:'p_12',
                     searchDifficulty:1,
                     hiddenItem:{
                         isHiddenItems:true,
-                        itemName:'Green Potion',
-                        itemID:'gp',
+                        itemName:'Red Potion',
+                        itemID:'rp',
                         revealText:'You found a red potion!',
                         foundItem:false
                     },
@@ -45,15 +46,18 @@
                     revealOption :false,
                     showText:false,
                     failText:'Nothing of interest was found. Try again?',
-                    userMessage:''
+                    userMessage:'',
+                    vut:'no'
                 }
             },
             
             beforeRouteLeave (to, from, next) {
-                // if item has been found, push the room to the visited store array
+                // just use `this`
                 if(this.hiddenItem.foundItem == true){
+                   
                     this.$store.commit('roomVisited', this.roomID);
                 }
+                
                 //this.$store.state.roomsVisited.push(this.roomID);
                 next()
             },
@@ -61,12 +65,15 @@
             created() {
 
                 //if this room has not previously been visited then allow setup
+                
                 if(!this.$store.state.roomsVisited.includes(this.roomID)){
                     searchBus.$on('searchConducted', (data) =>{
                     let successInt = Math.floor(Math.random() * (this.searchDifficulty - 0 + 1)) + 0;
+                    //this.$store.commit('itemFound', this.hiddenItem.itemName);
                     if(this.hiddenItem.foundItem == false){
                         if(successInt == 1){
                         this.hiddenItem.foundItem = true;
+                        itemBus.$emit('newItem', {'item': this.hiddenItem.itemName, 'itemID':this.hiddenItem.itemID});
                         //let message = this.hiddenItem.revealText
                         this.revealOption = data.isSearched;
                         this.showText = true;
@@ -89,6 +96,8 @@
                 //Boolean: Does the search reveal items in this room? Set global state.
                 this.$store.state.searchRoom.hiddenitems =
                 this.hiddenItem.isHiddenItems;
+
+                this.$store.state.currentRoom = this.roomID;
 
                 //Boolean: Does this room have hidden path options? Set global state.
                 this.$store.state.searchRoom.hiddenoptions = this.isHiddenObject;

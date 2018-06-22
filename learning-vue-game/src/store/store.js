@@ -88,6 +88,7 @@ export const store = new Vuex.Store({
             monstername:'Sailor'
         },
         playerInventory:[],
+        itemUsed:'',
         //new rooms visited are pushed automatically from the page view as soon as the page loads
         roomsVisited:[],
         currentRoom:'',
@@ -109,6 +110,9 @@ export const store = new Vuex.Store({
         }
     },
     mutations:{
+        itemUsed(state, index){
+            state.playerInventory.splice(index, 1);
+        },
         itemFound(state, item){
             state.playerInventory.push(item);
         },

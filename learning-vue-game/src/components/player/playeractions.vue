@@ -5,19 +5,25 @@
                <button class="button--style-alt" @click="updateHealth"><div class="attack"></div>Attack</button>
                <button class="button--style-alt">Magic</button>
 
-               <button class="button--style-alt" @click="searchRoom"
-               
+               <button 
+                class="button--style-alt" 
+                @click="searchRoom"
+                :disabled="this.$route.path == '/inventory'"
+                :class="{ disabled: this.$route.path == '/inventory' }"
                >Search</button>
                <button class="button--style-alt" @click="eatFood">Eat</button>
                 <button
                     @click="isPrayDisabled"
-                    :disabled="this.$store.state.praydisabled" 
-                    :class="{ disabled: this.$store.state.praydisabled }"
+                    :disabled="this.$store.state.praydisabled || this.$route.path == '/inventory'" 
+                    :class="{ disabled: this.$store.state.praydisabled || this.$route.path == '/inventory' }"
                     class="button--style-alt">
                     Pray
                 </button>
                 <router-link to="/inventory">
-                    <button class="button--style-alt routerlink">Bag
+                    <button 
+                    :disabled="this.$route.path == '/inventory'"
+                    :class="{ disabled: this.$route.path == '/inventory' }"
+                    class="button--style-alt routerlink">Bag
                     </button>
                 </router-link>
        </div>
@@ -27,6 +33,7 @@
 <script>
 import { lifeBus } from './../../main.js';
 import { searchBus } from './../../main.js';
+import { healBus } from './../../main.js';
 
 export default {
   name: 'playeractions',
@@ -63,11 +70,16 @@ export default {
         updateMessage(){
             //we need to concatonate the status message before sending to the store
             var message =  this.$store.state.monster.monstername + " hits " + this.$store.state.name + " for " + this.$store.state.adjustedDamage + " damage!"
+            this.$store.commit('updateTurnsLog', {message, isPlayer:false})
+             var message =  "dante hits monster for "+ 4 + " damage!"
             this.$store.commit('updateTurnsLog', {message, isPlayer:true})
         },
         //toggle praydisabled on the pray button
         isPrayDisabled: function(){
             this.startPrayTimer();
+            healBus.$emit('playerHeal', 5);
+            var message =  this.$store.state.guardian + " heard your prayer and has blessed you with 10 health. He will not answer again for awhile.";
+            this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
             return this.$store.state.praydisabled = !this.$store.state.praydisabled;
         },
         //3600000 is the equal to 1 hour so we can disable the pray button for an hour between use
@@ -86,7 +98,7 @@ export default {
 }
 
 .wrap--playeractions{
-    background-color:#3f3e3f;
+    background-color:#313131;
     margin-top:7px;
     padding:0 15px;
 }
