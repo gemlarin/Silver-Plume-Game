@@ -18,13 +18,19 @@
                             
                             <div class="col-6">
                                 <label>Hero's Name</label>
-                                <input v-model="playername" placeholder="Sir Dante">
-                                <!--<p>Your name is: {{ this.$store.state.name }}</p>-->
+                                <input 
+                                v-model="playername" 
+                                :maxlength="maxnamelength"
+                                placeholder="Hero's Name">
+                                <span v-if="this.namelength == this.maxnamelength">max</span>
                             </div>
                             <div class="col-6">
                                 <label>Hero's Diety</label>
-                                <input v-model="playerdiety" placeholder="Rah'tesh">
-                                <!--<p>Your name is: {{ this.$store.state.name }}</p>-->
+                                <input 
+                                :maxlength="maxdietyamelength"
+                                v-model="playerdiety" 
+                                placeholder="Hero's Diety">
+                                <span v-if="this.dietynamelength == maxdietyamelength">max</span>
                             </div>
                         </div>
                     </div>
@@ -46,12 +52,17 @@ export default {
   name: 'playerinit',
   data () {
     return {
-
+        namelength:'',
+        dietynamelength:'',
+        maxnamelength:10,
+        maxdietyamelength:12
     }
   },
   computed: {
+        
         playername: {
             get () {
+                this.namelength = this.$store.state.name.length
                 return this.$store.state.name
             },
             set (value) {
@@ -60,6 +71,7 @@ export default {
         },
         playerdiety: {
             get () {
+                this.dietynamelength = this.$store.state.guardian.length
                 return this.$store.state.guardian
             },
             set (value) {
@@ -68,7 +80,10 @@ export default {
         }
     },
     methods:{
-      
+    
+      updatemax(){
+        alert("kill")
+     }
     }
 }
 </script>
@@ -104,7 +119,7 @@ label{
 }
 
 input{
-  font-family: 'Sura', serif;
+  font-family: 'Zilla Slab', serif;
   width:100%;
   height:40px;
   font-size:18px;
@@ -112,7 +127,18 @@ input{
   color:#333;
   border-radius:3px;
   border:1px solid #dddddd;
+  position:relative;
 }  
+
+span{
+    float:right;
+    top:-29px;
+    margin-bottom:-29px;
+    margin-right:15px;
+    position:relative;
+    color:#ab4646;
+    font-size:12px;
+}
 
 .hline{
     display:relative;

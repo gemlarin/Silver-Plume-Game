@@ -72,6 +72,7 @@ export default {
     name: 'Dante',
     data: function(){
         return{
+            status:2
         }
     },
     computed: {
@@ -89,33 +90,9 @@ export default {
         //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
 
         //Important: set the activestatus before calling updatestatus
-        updateStatus: function(){
-            //normal modifier
-           if(this.$store.state.activestatus === 0){
-               this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
-               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
-               this.$store.state.holdstat = this.$store.state.status.normal
-           }
-           //drunk modifier
-           if(this.$store.state.activestatus === 1){
-               this.$store.state.armorrating= this.$store.state.status.one.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
-               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.one.effects.attack
-               this.$store.state.holdstat = this.$store.state.status.one
-           }
-           //poisoned modifier
-           if(this.$store.state.activestatus === 2){
-               this.$store.state.armorrating = this.$store.state.status.two.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
-               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.two.effects.attack
-               this.$store.state.holdstat = this.$store.state.status.two
-           }
-           //dizzy modifier
-           if(this.$store.state.activestatus === 3){
-               this.$store.state.armorrating = this.$store.state.status.three.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
-               this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.three.effects.attack
-               this.$store.state.holdstat = this.$store.state.status.three
-           }
-              
-        }
+       updateStatus(){
+           this.$store.commit('updateStatus', this.status)
+       }
     },
 
     components: {

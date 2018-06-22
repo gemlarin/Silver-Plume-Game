@@ -2,10 +2,12 @@
     <div class="wrap--playeractions">
        <div class="row flex--buttons">
        
-               <button class="button--style-alt" @click="updateHealth"><div class="attack"><img class="avatar" :src="require('./../../assets/player-button-attack.svg')" /></div>Attack</button>
+               <button class="button--style-alt" @click="updateHealth"><div class="attack"></div>Attack</button>
                <button class="button--style-alt">Magic</button>
 
-               <button class="button--style-alt">Search</button>
+               <button class="button--style-alt" @click="searchRoom"
+               
+               >Search</button>
                <button class="button--style-alt" @click="eatFood">Eat</button>
                 <button
                     @click="isPrayDisabled"
@@ -24,6 +26,7 @@
 
 <script>
 import { lifeBus } from './../../main.js';
+import { searchBus } from './../../main.js';
 
 export default {
   name: 'playeractions',
@@ -37,7 +40,9 @@ export default {
         eatFood() {
             lifeBus.$emit('newDamage', {'damage': 5, 'isFood': true});
         },
-        
+        searchRoom() {
+            searchBus.$emit('searchConducted', {'isSearched': true});
+        },
         updateHealth() {
             //temp: to be removed: randomize a damage value from monster hit
              this.$store.state.monster.monsterHitDamage = Math.floor(Math.random() * 6) + 1;

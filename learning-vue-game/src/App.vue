@@ -18,6 +18,7 @@
 import { lifeBus } from './main.js';
 import { manaBus } from './main.js';
 import { healBus } from './main.js';
+import { itemBus } from './main.js';
 import Player      from './components/player/Player'
 import DialogBox   from './components/dialog/Dialogbox'
 
@@ -53,6 +54,12 @@ export default {
   },
   computed:{
   
+  },
+  created() {
+    itemBus.$on('newItem', (data) =>{
+      this.$store.commit('itemFound', {'item':data.item, 'itemID':data.itemID});
+      alert(data.item + ',' + data.itemID)
+    });
   },
   metaInfo: {
       title: 'The Silver Plume', // set a title

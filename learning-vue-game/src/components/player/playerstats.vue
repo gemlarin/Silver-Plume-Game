@@ -1,6 +1,6 @@
 <template>
     <div class="wrap-stats">
-        <h5>Name: <span class="font--mod-bold">{{ this.$store.state.name }}</span></h5>
+        <h5>Name: <span class="font--mod-bold font--mod-size-large">{{ this.$store.state.name }}</span></h5>
         <h5>Guardian: <span class="font--mod-bold">{{ this.$store.state.guardian }}</span></h5>
         <br>
         <h5>Weapon: <span class="font--mod-bold">{{ this.$store.state.weapon.type }} {{ this.$store.state.weapon.itemname }} <span class="emphasize" :v-show="this.$store.state.weapon.bonus"> +{{ this.$store.state.weapon.bonus}}</span></span></h5>
@@ -34,10 +34,15 @@ export default {
         height:200px;
         margin-left:7px;
         padding:20px;
+        padding-top:15px;
     }
     .emphasize{
         color:#c0e229;
     }
+    .font--mod-size-large{
+        font-size:1.4em;
+    }
+
     h5{
         font-size:14px;
         color:rgb(168, 168, 168);

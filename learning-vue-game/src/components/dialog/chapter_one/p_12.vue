@@ -9,9 +9,9 @@
                     <p>
                         There are only two ways that the theif could have escaped the Valley of the Kings Castle. The high craggy trail, and the graceful sloping valley floor. Maybe some people along the way saw something. Be sure to ask around and search for clues. The fate of world peace depends on your success.
                     </p>
-                    <p class="hidden">You notice a cave enterance</p>
+                    <p v-if="showText == true">{{ userMessage }}</p>
                     <div class="options-nav">
-                        <router-link to="/p_13">
+                        <router-link to="/p_11">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Take the high path through the crags.
                             </button>
                         </router-link>
@@ -27,14 +27,90 @@
 </template>
 
 <script>
+    import { searchBus } from './../../../main.js';
     export default {
-        name: 'p_12',
+        name: 'p_11',
             data () {
                 return {
-
+                    roomID:'p_12',
+                    searchDifficulty:1,
+                    hiddenItem:{
+                        isHiddenItems:true,
+                        itemName:'Green Potion',
+                        itemID:'gp',
+                        revealText:'You found a red potion!',
+                        foundItem:false
+                    },
+                    isHiddenOption :true,
+                    revealOption :false,
+                    showText:false,
+                    failText:'Nothing of interest was found. Try again?',
+                    userMessage:''
                 }
+            },
+            
+            beforeRouteLeave (to, from, next) {
+                // if item has been found, push the room to the visited store array
+                if(this.hiddenItem.foundItem == true){
+                    this.$store.commit('roomVisited', this.roomID);
+                }
+                //this.$store.state.roomsVisited.push(this.roomID);
+                next()
+            },
+
+            created() {
+
+                //if this room has not previously been visited then allow setup
+                if(!this.$store.state.roomsVisited.includes(this.roomID)){
+                    searchBus.$on('searchConducted', (data) =>{
+                    let successInt = Math.floor(Math.random() * (this.searchDifficulty - 0 + 1)) + 0;
+                    if(this.hiddenItem.foundItem == false){
+                        if(successInt == 1){
+                        this.hiddenItem.foundItem = true;
+                        //let message = this.hiddenItem.revealText
+                        this.revealOption = data.isSearched;
+                        this.showText = true;
+                        this.userMessage = this.hiddenItem.revealText;
+                        console.log('found')
+                     
+                    }else{
+                      
+                        //this.revealOption = data.isSearched;
+                        this.showText = true;
+                        console.log('notfound')
+                        this.userMessage = this.failText;
+                    
+                    }
+                    }
+                })
+            
+                if(this.hiddenItem.isHiddenItems){
+
+                //Boolean: Does the search reveal items in this room? Set global state.
+                this.$store.state.searchRoom.hiddenitems =
+                this.hiddenItem.isHiddenItems;
+
+                //Boolean: Does this room have hidden path options? Set global state.
+                this.$store.state.searchRoom.hiddenoptions = this.isHiddenObject;
+
+                //String: What text do you want to use in the output when item is found? Set global state.
+                this.$store.state.searchRoom.hiddencontent.item.text = this.hiddenItem.revealText;
+
+                //String: What is the name of the item hidden in this room? Set global state.
+                this.$store.state.searchRoom.hiddencontent.item.text = this.hiddenItem.itemName;
             }
+
+            //Boolean: If the room has hidden options
+            if(this.isHiddenOption){
+                this.$store.state.searchRoom.hiddenoptions = this.isHiddenOption;
+            }  
+        }
+        //push room id to state if its not already in there
+
+            
+               
     }
+}
 </script>
 <style scoped>
    
