@@ -86,8 +86,20 @@
 
             created() {
 
+                //total bug fix. shadddup......
+                //would have to do too much refactoring the contents of the 
+                //{this.isHiddenItems || this.isHiddenOption} closure below 
+                //to include this check inside of a single searchBus.$on. by 
+                //the time this bug was discovered. Fix it if you think you can!!!
+ 
+                if(!this.isHiddenItems && !this.isHiddenOption){
+                    searchBus.$on('searchConducted', (data) =>{
+                        this.showText = false
+                        this.userMessage = this.failText; 
+                        this.showText = true;
+                    });
                 //TO:DO attach to a monsterKilled bus that hides the monester text
-
+                }
                 this.$store.state.currentRoom = this.roomID;
                 //initially enable the attack button, then disable if any below checks are true
                 this.$store.state.attackEnabled = true;
@@ -96,7 +108,7 @@
                     //load up the monster $State
                     this.$store.commit('setMonster', this.monster);
                     this.$store.state.maxMonsterHitDamage = this.monster.monsterHitDamage;
-                    this.$store.status.monsterRemainingHealth = this.monster.monsterHealth;
+                    this.$store.state.monsterRemainingHealth = this.monster.monsterHealth;
                     this.showMonsterText = false;
                     this.userMessage = this.monster.monsterText;
                     this.showMonsterText = true;
@@ -111,12 +123,13 @@
                 }
                 
                 //if room has either hidden items, or hidden options allow setup for item/option search to continue
+                //Note: this has a bug fix above to attach the searchBus to allow for a default message if room has no hidden contents.
                 if(this.isHiddenItems || this.isHiddenOption){
                 
                 //if this room has not previously been visited then allow hidden item/object setup to continue
                 //this room ID is pushed to roomsVisited array in beforeRouteLeave if foundItem is true
                     if(!this.$store.state.roomsVisited.includes(this.roomID)){
-                        //Attach to the searchBus. searchConducted is triggered from playeractions.vue
+                        //Attach to the searchBus. searchConducted is triggered from playeractions.vu
                         searchBus.$on('searchConducted', (data) =>{
                             //if the item has not been found yet in this room then let the search proceed
                             if(this.hiddenItem.foundItem == false){

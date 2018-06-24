@@ -21,7 +21,8 @@ export const lifeBus = new Vue();    //bus for damage to player
 export const manaBus = new Vue();    //bus for mana use
 export const healBus = new Vue();    //bus for healing player
 export const statusBus = new Vue();  //bus to change player status
-export const itemBus = new Vue();    //bus to trasport items from the book to the bag
+export const itemBus = new Vue();    //bus to trasport items from the book 
+export const slayBus = new Vue();    //bus to trasport items from the book to the bag
 export const searchBus = new Vue();    //bus to trasport items from the book to the bag
 
 new Vue({

@@ -6,8 +6,8 @@
                   <li 
                   v-for="(turn,index) in this.$store.state.turns"
                   :key="index"
-                  :class="{'player-turn': turn.isPlayer,'monster-turn': !turn.isPlayer,'heal-turn': turn.isHeal}">
-                  {{ turn.message }}
+                  :class="{'player-turn': turn.isPlayer,'monster-turn': turn.isMonster,'heal-turn': turn.isHeal, 'monster-health-turn': turn.isDeath, 'magic-turn': turn.isMagic, 'alert-turn': turn.isAlert}">
+                  {{ "> " + turn.message }}
                   </li>
               </ul>
           </div>
@@ -68,8 +68,15 @@ img{
     width:auto;
 }
 
-.log ul .player-turn{
-    color:orange;
+.log ul .alert-turn{
+    font-family: 'Zilla Slab', serif;
+    color:#f18829;
+    font-weight:700;
+}
+
+.log ul .magic-turn{
+    font-family: 'Zilla Slab', serif;
+    color:#ecafff;
     
 }
 
@@ -77,16 +84,23 @@ img{
     font-family: 'Zilla Slab', serif;
     color:rgb(255, 18, 91);
     font-weight:700;
+
 }
 
 .log ul .player-turn{
-    color:rgb(255, 193, 22);
+    font-family: 'Zilla Slab', serif;
+    color:rgb(40, 245, 40);
     font-weight:700;
 }
 
 .log ul .heal-turn{
-    color:rgb(40, 245, 40);
-  font-weight:700;
+    font-family: 'Zilla Slab', serif;
+    color:rgb(59, 207, 200);
+    font-weight:700;
+}
+
+.log ul .monster-health-turn{
+    color:#d8d2ce
 }
     
 </style>

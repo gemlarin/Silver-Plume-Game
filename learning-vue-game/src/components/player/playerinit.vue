@@ -91,6 +91,8 @@ export default {
     },
     beforeRouteLeave (to, from, next) {
         this.$store.state.disableAllInputs = false;
+        var message =  "Hello... " + this.$store.state.name + "I am your scrying tablet!" + this.$store.state.guardian + " will communicate important status messages to you here."
+        this.$store.commit('updateTurnsLog', {message, isPlayer:true});
         //this.$store.state.roomsVisited.push(this.roomID);
         next()
     },

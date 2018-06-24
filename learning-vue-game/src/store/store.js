@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
         }],
         armorrating: "",
         attackrating:"",
+        attackRatingBonus:0, //benefits from using potions and items found
         name: 'Sir Dante',
         disableAllInputs:false,
         playersex:'male',//not used right now
@@ -95,7 +96,7 @@ export const store = new Vuex.Store({
             monsterDeadtext:''
         },
         maxMonsterHitDamage:0,
-        monsterRemainingHealth:0
+        monsterRemainingHealth:0,
         attackEnabled:false, //if the atttack button is enabled or not
         playerInventory:[],
         itemUsed:'',

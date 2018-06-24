@@ -19,6 +19,7 @@ import { lifeBus } from './main.js';
 import { manaBus } from './main.js';
 import { healBus } from './main.js';
 import { itemBus } from './main.js';
+import { slayBus } from './main.js';
 import Player      from './components/player/Player'
 import DialogBox   from './components/dialog/Dialogbox'
 
@@ -56,6 +57,7 @@ export default {
   
   },
   created() {
+
     //itemBus receives its data from the individual dialog pages if the item defined there is found via search
     //If anyone ever reads this and asks WTF? I put it here because I needed a common parent of the dialog pages to pick up the data coming down the pipe and there were some weird conflicts when trying to access $store from inside the $ON of another vue. IDK. THis fixed it, so whatever.
     itemBus.$on('newItem', (data) =>{
