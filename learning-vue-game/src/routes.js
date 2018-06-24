@@ -14,6 +14,7 @@ export const routes = [
     { path: '*', component: PageNotFound },
     { path: '/inventory', component: Inventory },
     { path: '/', component: PlayerInit},
+    { path: '', component: PlayerInit},
     { path: '/instructions', component: Instructions },
     { path: '/instructions2', component: Instructions2 },
     { path: '/intro_1', component: Intro},

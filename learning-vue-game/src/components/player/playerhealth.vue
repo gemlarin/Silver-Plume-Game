@@ -38,12 +38,24 @@ export default {
     }
   },
   created(){
-    //need to set the base life
+    //need to attach to lifeBus emitter located in playeractions.vue
     lifeBus.$on('newDamage', (data) =>{
       this.$store.state.newDamage = data.damage;
       if(!data.isFood){
-        console.log('not food')
-        this.$store.state.currentHealth = this.$store.state.currentHealth - (this.$store.state.newDamage - this.playerstatus.effects.armor) + this.playerbonuses;
+
+        this.$store.state.adjustedDamage = 
+        this.$store.state.newDamage - 
+        (this.playerstatus.effects.armor + 
+        this.playerbonuses);
+
+        console.log("adj: " + this.$store.state.adjustedDamage)
+        console.log("norm: " + data.damage)
+        if(this.$store.state.adjustedDamage < 0 ){
+          this.$store.state.adjustedDamage = 0;
+        }
+
+        this.$store.state.currentHealth = this.$store.state.currentHealth - this.$store.state.adjustedDamage;
+
       }
       if(data.isFood){
         console.log('is food')
@@ -55,6 +67,8 @@ export default {
       if(this.$store.state.currentHealth < 0){
         this.$store.state.currentHealth = 0;
       }
+
+         
     }),
     healBus.$on('playerHeal', (data) =>{
       this.$store.state.currentHealth = this.$store.state.currentHealth + data;

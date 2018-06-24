@@ -15,10 +15,6 @@
                             <button type="button" class="btn btn-primary btn-lg btn-block">This is damn interesting friend! Tell me more!
                             </button>
                         </router-link>
-                        <router-link to="/p_11">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Enough! I've naught all day for this! Let's get moving!
-                            </button>
-                        </router-link>
                     </div>
                 </div>
             </div>

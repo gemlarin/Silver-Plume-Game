@@ -12,8 +12,9 @@ export const store = new Vuex.Store({
         armorrating: "",
         attackrating:"",
         name: 'Sir Dante',
-        playersex:'male',
-        guardian: "Rah'tesh",
+        disableAllInputs:false,
+        playersex:'male',//not used right now
+        guardian: "Rahtesh",
         weapon: {
             type:"Steel",
             itemname:"Sword",
@@ -38,7 +39,7 @@ export const store = new Vuex.Store({
                     attack:0
                 }
             },
-            one: {
+            drunk: {
                 imparement:"drunk",
                 length:10,
                 effects:{
@@ -47,7 +48,7 @@ export const store = new Vuex.Store({
                     attack:-1
                 }
             },
-            two: {
+            poisoned: {
                 imparement:"poisoned",
                 length:3000,
                 effects:{
@@ -56,7 +57,7 @@ export const store = new Vuex.Store({
                     attack:-1
                 }
             },
-            three: {
+            dizzy: {
                 imparement:"dizzy",
                 length:10,
                 effects:{
@@ -69,7 +70,7 @@ export const store = new Vuex.Store({
         food: 4,
         gold:25,
         //activestatus is the selected status modifier
-        activestatus:2,
+        activestatus:'normal',
         //holdstat is the selected status object. It contains the current status effects and impairment
         holdstat:{},
         maxhealth:20, //max health allowed
@@ -82,17 +83,29 @@ export const store = new Vuex.Store({
         currentMana: 20, //self explainatory
         foundItem:false,//if the item in the room is found or not
         usedMana: 0, //amount of mana used by spell
+        minHealOnPray:3, //the minimum amount that you can heal on pray
+        maxHealOnPray:10, //the minimum amount that you can heal on pray
+        prayerTimer:3600000, //prayer cooldown time
         monster:{
             monsterHitDamage:4,
             monsterHealth:10,
-            monstername:'Sailor'
+            monstername:'Bubba',
+            monsterTest:'',
+            monsterDiedText:'',
+            monsterDeadtext:''
         },
+        maxMonsterHitDamage:0,
+        monsterRemainingHealth:0
+        attackEnabled:false, //if the atttack button is enabled or not
         playerInventory:[],
         itemUsed:'',
-        //new rooms visited are pushed automatically from the page view as soon as the page loads
-        roomsVisited:[],
-        currentRoom:'',
+        //new rooms visited are pushed automatically from the page view if the hidden stuff has been found from within that component file.
+        roomsVisited:[],//all of the rooms that have been visited
+        roomsWithItemsFound:[],//the rooms that items have been found inside of already
+        roomsWithMonstersSlain:[], //the rooms that the monster has been slain in
+        currentRoom:'',//the room you are currently in
         //searchRoom state data is set automatically from the page view as soon as the page loads
+        searchEnabled:true,
         searchRoom:{
             //if this room actually contains any items
             hiddenitems: false,
@@ -116,35 +129,63 @@ export const store = new Vuex.Store({
         itemFound(state, item){
             state.playerInventory.push(item);
         },
+        eatFood(state, eat){
+            if(state.food > 0 && eat){
+                state.food = state.food -1
+            }
+        },
         roomVisited(state, room){
             state.roomsVisited.push(room);
+        },
+        roomsWithItemsFound(state, room){
+            state.roomsWithItemsFound.push(room);
+        },
+        roomsWithMonstersSlain(state, room){
+            state.roomsWithMonstersSlain.push(room);
+        },
+        enableSearch(state, val){
+            state.searchEnabled = val;
+        },
+        setMonster(state, monster){
+            var monsterPayload = monster;
+            state.monster.monsterHitDamage = monsterPayload.monsterHitDamage;
+            state.monster.monsterHealth = monsterPayload.monsterHealth;
+            state.monster.monsterName = monsterPayload.monsterName;
+            state.maxMonsterHitDamage = monsterPayload.monsterHitDamage;
+            state.monster.monsterText = monsterPayload.monsterText;
+            state.monster.monsterDiedText = monsterPayload.monsterDiedText; 
+            state.monster.monsterDeadtext = monsterPayload.monsterDeadtext;
+            console.log("HAS____MONSTER____!!!");
+            console.log("monsterHitDamage",state.monster.monsterHitDamage);
+            console.log("monsterHealth",state.monster.monsterHealth);
+            console.log("monstername",state.monster.monsterName);
         },
         updateStatus(state, status){
             //normal modifier
             state.activestatus = status;
 
-           if(state.activestatus === 0){
+           if(state.activestatus === 'normal'){
                state.armorrating = state.status.normal.effects.armor + state.shield.bonus + state.armor.bonus;
                state.attackrating = state.weapon.bonus + state.status.normal.effects.attack
                state.holdstat = state.status.normal
            }
            //drunk modifier
-           if(state.activestatus === 1){
-               state.armorrating= state.status.one.effects.armor + state.shield.bonus + this.$store.state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.one.effects.attack
-               state.holdstat = state.status.one
+           if(state.activestatus === 'drunk'){
+               state.armorrating= state.status.drunk.effects.armor + state.shield.bonus + state.armor.bonus;
+               state.attackrating = state.weapon.bonus + state.status.drunk.effects.attack
+               state.holdstat = state.status.drunk
            }
            //poisoned modifier
-           if(state.activestatus === 2){
-               state.armorrating = state.status.two.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.two.effects.attack
-               state.holdstat = state.status.two
+           if(state.activestatus === 'poisoned'){
+               state.armorrating = state.status.poisoned.effects.armor + state.shield.bonus + state.armor.bonus;
+               state.attackrating = state.weapon.bonus + state.status.poisoned.effects.attack
+               state.holdstat = state.status.poisoned
            }
            //dizzy modifier
-           if(state.activestatus === 3){
-               state.armorrating = state.status.three.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.three.effects.attack
-               state.holdstat = state.status.three
+           if(state.activestatus === 'dizzy'){
+               state.armorrating = state.status.dizzy.effects.armor + state.shield.bonus + state.armor.bonus;
+               state.attackrating = state.weapon.bonus + state.status.dizzy.effects.attack
+               state.holdstat = state.status.dizzy
            }
               
         },

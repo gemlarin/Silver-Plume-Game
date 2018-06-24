@@ -84,14 +84,15 @@ export default {
         //Need to initialize the hero values
         this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
         this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
-        this.$store.state.holdstat = this.$store.state.status.normal
+        //init the staus as normal when game firsl loads
+        this.$store.commit('updateStatus', this.$store.state.activestatus)
+
     },
     methods:{
         //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
-
         //Important: set the activestatus before calling updatestatus
        updateStatus(){
-           this.$store.commit('updateStatus', this.status)
+           this.$store.commit('updateStatus', 'poisoned')
        }
     },
 

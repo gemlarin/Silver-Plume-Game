@@ -43,7 +43,7 @@ li{
 }
 
 .log{
-    height:140px;
+    height:160px;
     margin-top:15px;
     padding-left:15px;
     overflow:scroll;

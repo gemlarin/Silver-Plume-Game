@@ -10,6 +10,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <p>Before we set out on our fantastic quest, it would probably be a good idea to give your hero a name and a guardian. Your guardian will provide healing comfort once per day, but it may come at a cost, so be careful!</p>
+                                <p class="text--mod-small"><strong>By decree of the king, names must not contain numbers, nor special characters.</strong> </p>
                                 <br>
                            <br>
                             </div>
@@ -55,7 +56,8 @@ export default {
         namelength:'',
         dietynamelength:'',
         maxnamelength:10,
-        maxdietyamelength:12
+        maxdietyamelength:12,
+        playermask:''
     }
   },
   computed: {
@@ -66,7 +68,10 @@ export default {
                 return this.$store.state.name
             },
             set (value) {
-                this.$store.commit('updateName', value)
+                //sanitze to alpha only
+                let pm = /[^A-Z]/gi
+                this.$set(this, 'playermask', value.replace(pm, ''))
+                this.$store.commit('updateName', this.playermask); 
             }
         },
         playerdiety: {
@@ -75,9 +80,19 @@ export default {
                 return this.$store.state.guardian
             },
             set (value) {
+                let pd = /[^A-Z]/gi
+                this.$set(this, 'playermask', value.replace(pd, ''))
                 this.$store.commit('updateDiety', value)
             }
         }
+    },
+    created(){
+        this.$store.state.disableAllInputs = true;
+    },
+    beforeRouteLeave (to, from, next) {
+        this.$store.state.disableAllInputs = false;
+        //this.$store.state.roomsVisited.push(this.roomID);
+        next()
     },
     methods:{
     
@@ -103,6 +118,9 @@ img{
 p{
     font-family: 'Zilla Slab', serif;
     color:#5f5f5f;
+}
+p.text--mod-small{
+    font-size:1.4em;
 }
 ul li {
     font-family: 'Zilla Slab', serif;

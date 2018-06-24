@@ -39,12 +39,20 @@
 <script>
 
 export default {
-  name: 'playerinstructions2',
-  data () {
-    return {
+    name: 'playerinstructions2',
+    data () {
+        return {
 
+        }
+    },
+    created(){
+        this.$store.state.disableAllInputs = true;
+    },
+    beforeRouteLeave (to, from, next) {
+        this.$store.state.disableAllInputs = false;
+        //this.$store.state.roomsVisited.push(this.roomID);
+        next();
     }
-  }
 }
 </script>
 <style scoped>

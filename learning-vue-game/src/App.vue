@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div id="app">
       <div class="row">
         <div class="col-md-5">
@@ -39,15 +39,15 @@ export default {
     appDialog: DialogBox,
   },
   methods:{
-    //temporary: remove after dev. using to hide component during build.
+    //temporary: for testing. remove after dev. using to hide component during build.
      toggle(){
         this.isOpen = !this.isOpen
       },
-      //temporary: remove after the manaBus is properly set up in the game logic
+      //temporary: for testing. remove after the manaBus emitters are configured
      updateMana() {
        manaBus.$emit('usedMana', this.playermana)
      },
-      //temporary: remove after the healBus is properly set up in the game logic
+      //temporary: for testing. remove after the healBus emitters are configured
      updateHeal() {
        healBus.$emit('playerHeal', this.heal)
      }
@@ -56,13 +56,16 @@ export default {
   
   },
   created() {
+    //itemBus receives its data from the individual dialog pages if the item defined there is found via search
+    //If anyone ever reads this and asks WTF? I put it here because I needed a common parent of the dialog pages to pick up the data coming down the pipe and there were some weird conflicts when trying to access $store from inside the $ON of another vue. IDK. THis fixed it, so whatever.
     itemBus.$on('newItem', (data) =>{
+      //add the items object you found to the $store - stores them to an array
       this.$store.commit('itemFound', {'item':data.item, 'itemID':data.itemID});
     });
   },
   metaInfo: {
-      title: 'The Silver Plume', // set a title
-      titleTemplate: '%s - Yay!', // title is now "My Example App - Yay!"
+      title: 'The Silver Plume', // set a main global title
+      titleTemplate: '%s - Choose Your Path', // set your default global subtitle
       htmlAttrs: {
         lang: 'en',
         amp: undefined // "amp" has no value
@@ -235,6 +238,10 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       border-color: #dedede;
       text-shadow: 1px 1px #4b4b4b;
   }
+
+  //animation stuff
+
+ 
 
 
 </style>

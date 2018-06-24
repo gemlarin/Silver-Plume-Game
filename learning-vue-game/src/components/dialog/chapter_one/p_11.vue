@@ -6,20 +6,27 @@
                     <h1>The Valley.</h1>
                     <img class="teardrop" :src="require('./../../../assets/lion-crest.png')" />
                     <hr>
-                     <p v-if="showText == true">{{ userMessage }}</p>
+                    <p>eee</p>
+                    <transition name="fade" mode="out-in">
+                        <p v-if="showText == true">{{ userMessage }}</p>
+                    </transition>
+                     <!-- if the room has a monster -->
+                    <p v-if="showMonsterText == true">{{ monster.monsterText }}</p>
                     <div class="options-nav">
                         <router-link to="/p_12">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Approach the mouth of the valley.
                             </button>
                         </router-link>
-                        <router-link 
-                            to="/p_12"
-                            v-if="revealOption"
-                            >
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Approach the mouth of the valley.
-                            </button>
-                        </router-link>
-                    </div>
+
+                        <transition name="fade">
+                            <div class="option--hidden-container" v-if="hiddenOption.revealOption">
+                                <router-link to="/p_12">
+                                    <button type="button" class="btn btn-primary btn-lg btn-block">Lick my balls
+                                    </button>
+                                </router-link>
+                            </div><!-- option--hidden-container -->
+                         </transition>
+                    </div><!-- options-nav -->
                 </div>
             </div>
         </div>       
@@ -35,92 +42,146 @@
                 return {
                     roomID:'p_11',
                     searchDifficulty:1,
+                    //do not set both isHiddenItems and isHiddenOption to true.. Can only have one per page.
+                    isHiddenItems:false,//set to false if the room has no hidden items
+                    isHiddenOption:false,//set to false if the room has hidden path options
+                    hasMonster:true, //set to false if no monster in room
+                    monster:{
+                        monsterHitDamage:4,
+                        monsterHealth:10,
+                        monsterName:'Sailor',
+                        monsterText:'A large drunken Sailor is blocking the way. You can probably take him.',
+                        monsterDiedText:'The oddly obese Sailor slump forward, and falls to the ground. You are the victor!',
+                        monsterDeadtext:'There is an obese Sailor dead on the ground.'
+                    },
                     hiddenItem:{
-                        isHiddenItems:true,
                         itemName:'Green Potion',
                         itemID:'gp',
                         revealText:'You found a green potion!',
-                        foundItem:false
+                        foundItem:false//initializer leave set to false.
                     },
-                    isHiddenOption :true,
-                    revealOption :false,
-                    showText:false,
-                    failText:'Nothing of interest was found. Try again?',
-                    userMessage:'',
+                    hiddenOption:{
+                        revealOption :false,//initializer leave set to false.
+                        revealText:'You discovered a small pathway behind a brush.'
+                    },
+                    showText:false,//initializer leave set to false. 
+                    showMonsterText:false,//initializer leave set to false. 
+                    failText:'Nothing of interest was found. Try again?',//message to user if search fails
+                    userMessage:'',//initializer leave string empty
                     vut:'no'
                 }
             },
+            metaInfo: {
+                titleTemplate: '%s - The Valley'
+            },
             
             beforeRouteLeave (to, from, next) {
-                // just use `this`
+                // if you found the hidden object/option this visit to this room, send the roomID down the pipe to lock further search attempts.
                 if(this.hiddenItem.foundItem == true){
-                   
                     this.$store.commit('roomVisited', this.roomID);
                 }
-                
                 //this.$store.state.roomsVisited.push(this.roomID);
                 next()
             },
 
             created() {
 
-                //if this room has not previously been visited then allow setup
-                
-                if(!this.$store.state.roomsVisited.includes(this.roomID)){
-                    searchBus.$on('searchConducted', (data) =>{
-                    let successInt = Math.floor(Math.random() * (this.searchDifficulty - 0 + 1)) + 0;
-                    //this.$store.commit('itemFound', this.hiddenItem.itemName);
-                    if(this.hiddenItem.foundItem == false){
-                        if(successInt == 1){
-                        this.hiddenItem.foundItem = true;
-                        //listener is located in App.vue
-                        itemBus.$emit('newItem', {'item': this.hiddenItem.itemName, 'itemID':this.hiddenItem.itemID});
-                        //let message = this.hiddenItem.revealText
-                        this.revealOption = data.isSearched;
-                        this.showText = true;
-                        this.userMessage = this.hiddenItem.revealText;
-                        console.log('found')
-                     
-                    }else{
-                      
-                        //this.revealOption = data.isSearched;
-                        this.showText = true;
-                        console.log('notfound')
-                        this.userMessage = this.failText;
-                    
-                    }
-                    }
-                })
-            
-                if(this.hiddenItem.isHiddenItems){
-
-                //Boolean: Does the search reveal items in this room? Set global state.
-                this.$store.state.searchRoom.hiddenitems =
-                this.hiddenItem.isHiddenItems;
+                //TO:DO attach to a monsterKilled bus that hides the monester text
 
                 this.$store.state.currentRoom = this.roomID;
+                //initially enable the attack button, then disable if any below checks are true
+                this.$store.state.attackEnabled = true;
+                //set up the monster if there is one in the room and it has not been slain
+                if(!this.$store.state.roomsWithMonstersSlain.includes(this.roomID) && this.hasMonster){
+                    //load up the monster $State
+                    this.$store.commit('setMonster', this.monster);
+                    this.$store.state.maxMonsterHitDamage = this.monster.monsterHitDamage;
+                    this.$store.status.monsterRemainingHealth = this.monster.monsterHealth;
+                    this.showMonsterText = false;
+                    this.userMessage = this.monster.monsterText;
+                    this.showMonsterText = true;
+                }
+                //need to lock attack button if no monster is enabled for this room
+                if(!this.hasMonster){
+                    this.$store.state.attackEnabled = false;
+                }
+                //need to lock attack button if monster has been slain in this room
+                if(this.$store.state.roomsWithMonstersSlain.includes(this.roomID)){
+                    this.$store.state.attackEnabled = false;
+                }
+                
+                //if room has either hidden items, or hidden options allow setup for item/option search to continue
+                if(this.isHiddenItems || this.isHiddenOption){
+                
+                //if this room has not previously been visited then allow hidden item/object setup to continue
+                //this room ID is pushed to roomsVisited array in beforeRouteLeave if foundItem is true
+                    if(!this.$store.state.roomsVisited.includes(this.roomID)){
+                        //Attach to the searchBus. searchConducted is triggered from playeractions.vue
+                        searchBus.$on('searchConducted', (data) =>{
+                            //if the item has not been found yet in this room then let the search proceed
+                            if(this.hiddenItem.foundItem == false){
+                                //determine if the search was a success or not. 
+                                //Higher search difficulty = less chance of rolling a 1 to reveal the items!
+                                let successInt = Math.floor(Math.random() * (this.searchDifficulty - 0 + 1)) + 0;
+                                //awesome. you rolled a 1. 
+                                if(successInt == 1){
+                                    //let the global $store know that the items/objects have been found in this room
+                                    this.$store.commit('roomsWithItemsFound', this.roomID);
+                                    this.$store.commit('enableSearch', false);
+                                    //you found the object, stop additional attempts by setting foundItem to true
+                                    //this is a powerful setting and has major impacts if set anywhere but here
+                                    this.hiddenItem.foundItem = true;
+                                    //boolean: if the room has hidden items vs. hidden options, proceed
+                                    if(this.isHiddenItems ){
+                                        //listener is located in App.vue
+                                        //send the items you found down the pipline to get stored in your global found items array.
+                                        itemBus.$emit('newItem', {'item': this.hiddenItem.itemName, 'itemID':this.hiddenItem.itemID});
+                                        //set the text for message that is revealed
+                                        this.showText = false;
+                                        this.userMessage = this.hiddenItem.revealText;
+                                        this.showText = true;
+                                    }
+                                    //if it is a hidden option, vs. a hidden item, proceed
+                                    if(this.isHiddenOption){
+                                        //allow the hidden option(s) button(s) to be revealed
+                                        this.hiddenOption.revealOption = true;
+                                        //set the text for message that is revealed
+                                        this.showText = false;
+                                        this.userMessage = this.hiddenOption.revealText;
+                                        this.showText = true;
+                                    }
+                                    console.log('found');
+                                }//end of 1 rolled closure
+                                //else, if nothing was found this search
+                                else{
+                                    console.log('notfound')
+                                    //set the user message to the failText
+                                    this.showText = false
+                                    this.userMessage = this.failText; 
+                                    this.showText = true;
+                                }
+                            }//end of if found item closure
+                        })//end of searchBus closure
+                    }//end of if room never visited closure
+                    //these will automatically run on room load if the room has never been visited 
 
-                //Boolean: Does this room have hidden path options? Set global state.
-                this.$store.state.searchRoom.hiddenoptions = this.isHiddenObject;
-
-                //String: What text do you want to use in the output when item is found? Set global state.
-                this.$store.state.searchRoom.hiddencontent.item.text = this.hiddenItem.revealText;
-
-                //String: What is the name of the item hidden in this room? Set global state.
-                this.$store.state.searchRoom.hiddencontent.item.text = this.hiddenItem.itemName;
-            }
-
-            //Boolean: If the room has hidden options
-            if(this.isHiddenOption){
-                this.$store.state.searchRoom.hiddenoptions = this.isHiddenOption;
-            }  
-        }
-        //push room id to state if its not already in there
-
-            
-               
-    }
-}
+                    //-------USE FOR ROOM LOAD SETUP BELOW HERE--------
+                    //if the rooms hiddent stuff has been found
+                    if(this.$store.state.roomsWithItemsFound.includes(this.roomID)){
+                        //item already found in room. Diable the search button
+                        this.hiddenOption.revealOption = true;
+                        this.$store.commit('enableSearch', false);
+                        this.showText = false
+                        this.userMessage = "This room has been thouroughly searched";
+                        this.showText = true;
+                        
+                    }else{
+                        //item not yet found in room. Enable the search button
+                        this.$store.commit('enableSearch', true);
+                    }
+                }//end of this.isHiddenItems || this.isHiddenOption closure
+            }  //end of created() closure 
+}//end of export default
 </script>
 <style scoped>
   a{
@@ -170,5 +231,26 @@ input{
 
 .field-wrap{
     margin-top:30px;
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2s ease-out;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+
+.fade-enter-active {
+  transition: opacity 1s ease-out;
+}
+.fade-leave-active {
+  transition: opacity 1s ease-out;
+}
+.fade-enter, .fade-leave-to
+{
+  opacity: 0;
 }
 </style>
