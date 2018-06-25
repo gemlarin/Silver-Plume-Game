@@ -103,7 +103,6 @@
                 this.$store.commit("eatFood", { eat: true });
                 this.$store.state.disableAllInputs = false;
                 this.$store.commit('canFleeRoom', this.canFleeRoom);
-
                 if(!this.isHiddenItems && !this.isHiddenOption){
                     searchBus.$on('searchConducted', (data) =>{
                         this.showText = false
