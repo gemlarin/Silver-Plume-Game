@@ -4,6 +4,7 @@
             <div class="row">
                 <div class="col-12">
                     <h1>The Valley.</h1>
+                    
                     <img class="teardrop" :src="require('./../../../assets/lion-crest.png')" />
                     <hr>
                     <p>eee</p>
@@ -94,7 +95,7 @@
             },
 
             created() {
-
+           
                 //total bug fix. shadddup......
                 //would have to do too much refactoring the contents of the 
                 //{this.isHiddenItems || this.isHiddenOption} closure below 

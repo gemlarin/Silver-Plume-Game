@@ -23,7 +23,6 @@ import { slayBus } from './main.js';
 import Player      from './components/player/Player'
 import DialogBox   from './components/dialog/Dialogbox'
 
-
 export default {
   name: 'app',
   image: require('./assets/player-knight.svg'),

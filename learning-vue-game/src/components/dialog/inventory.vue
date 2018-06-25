@@ -30,42 +30,42 @@
     import { healBus } from './../../main.js';
     export default {
         name: 'inventory',
-            data () {
-                return {
-                    itemUsed:''
-                }
+        data () {
+            return {
+                itemUsed:''
+            }
+        },
+        methods:{
+            //allows us to return to the previous view when the inventory is closed
+            goback: function(){
+                this.$router.go(-1);
             },
-            methods:{
-                //allows us to return to the previous view when the inventory is closed
-                goback: function(){
-                    this.$router.go(-1);
-                },
-                useItem: function(index, item){
-                    console.log('index: ' + index)
-                    console.log('removeitem: ' + item)
-                    this.$store.commit('itemUsed', index);
+            useItem: function(index, item){
+                console.log('index: ' + index)
+                console.log('removeitem: ' + item)
+                this.$store.commit('itemUsed', index);
 
 
-                    switch (item) {
-                    case 'gp':
-                        healBus.$emit('playerHeal', 5);
-                        var message =  this.$store.state.name + " is healed for 5 points!";
-                        this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
-                        break;
-                      case 'rp':
-                        healBus.$emit('playerHeal', 10);
-                        var message =  this.$store.state.name + " is healed for 10 points!";
-                        this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
-                        break;
-                    case 'Papayas':
-                        console.log('Mangoes and papayas are $2.79 a pound.');
-                        // expected output: "Mangoes and papayas are $2.79 a pound."
-                        break;
-                    default:
-                        console.log('Sorry, we are out of ');
-                    }
+                switch (item) {
+                case 'gp':
+                    healBus.$emit('playerHeal', 5);
+                    var message =  this.$store.state.name + " is healed for 5 points!";
+                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
+                    break;
+                    case 'rp':
+                    healBus.$emit('playerHeal', 10);
+                    var message =  this.$store.state.name + " is healed for 10 points!";
+                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
+                    break;
+                case 'Papayas':
+                    console.log('Mangoes and papayas are $2.79 a pound.');
+                    // expected output: "Mangoes and papayas are $2.79 a pound."
+                    break;
+                default:
+                    console.log('Sorry, we are out of ');
                 }
             }
+        }
     }
 </script>
 <style scoped>

@@ -7,10 +7,20 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Meta from 'vue-meta'
+import { TimelineLite, CSSPlugin, AttrPlugin }  from "gsap/all";
+
+//without this line, CSSPlugin and AttrPlugin may get dropped by your bundler...
+const plugins = [ CSSPlugin, AttrPlugin, TimelineLite ];
+
+
+
 
 Vue.use(BootstrapVue);
 Vue.use(Meta);
 Vue.use(VueRouter);
+
+
+
 
 const router = new VueRouter({
   routes,
@@ -27,6 +37,7 @@ export const searchBus = new Vue();    //bus to trasport items from the book to 
 
 new Vue({
   el: '#app',
+  plugins,
   router,
   store,
   render: h => h(App)
