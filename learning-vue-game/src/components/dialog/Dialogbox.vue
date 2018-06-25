@@ -1,7 +1,9 @@
 <template>
     <div class="wrap">
     <!--<div class="ornament--left"><img class="avatar" :src="require('./../../assets/left-ornament.svg')" /></div>-->
+    <transition name="fade" mode="out-in">
     <router-view></router-view>
+    </transition>
     <!--<div class="ornament--right"><img class="avatar" :src="require('./../../assets/right-ornament.svg')" /></div>-->
     </div>
 </template>
@@ -41,4 +43,15 @@
         right:5px;
         top:40%;
     }
+
+.fade-enter-active {
+  transition: opacity 1s ease-out;
+}
+.fade-leave-active {
+  transition: opacity 1s ease-out;
+}
+.fade-enter, .fade-leave-to
+{
+  opacity: 0;
+}
 </style>

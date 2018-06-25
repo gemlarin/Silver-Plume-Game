@@ -278,13 +278,6 @@ input{
 }
 
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 2s ease-out;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 
 
 .fade-enter-active {
