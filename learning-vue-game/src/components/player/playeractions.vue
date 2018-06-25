@@ -13,10 +13,14 @@
                <!-- Magic button -->
                <button 
                 class="button--style-alt"
-                :disabled="this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs"
-                :class="{ disabled: this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs }"
+                @click="fleeRoom"
+                :disabled="this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs ||
+                !this.$store.state.canFleeRoom || isFleeAllowed
+                "
+                :class="{ disabled: this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs ||
+                !this.$store.state.canFleeRoom || isFleeAllowed }"
                 >
-                Magic
+                Flee
                </button>
                 <!-- Search button -->
                <button 
@@ -74,9 +78,20 @@ export default {
       monsterState: "excellent"
     };
   },
+  computed: {
+        isFleeAllowed: function () {
+        return this.$store.state.roomsWithMonstersSlain.includes(this.$store.state.currentRoom);
+        }
+    },
   methods: {
     updateStatus(stat) {
       this.$store.commit("updateStatus", stat);
+    },
+    fleeRoom(){
+        //TODO roll the dice to see if rooom can be fled
+        this.$store.commit("canFleeRoom", { eat: true });
+        //success, flee to previous room
+        this.$router.go(-1);
     },
     eatFood() {
       //when passing isFood:true to the lifeBus, the result is healing instead of harm
@@ -101,12 +116,9 @@ export default {
       searchBus.$emit("searchConducted", { isSearched: true });
     },
     updateHealth() {
-      this.monsterAttack();
-      this.playerAttack();
-      //Generate the player attack damage and send it down the pipe
-      //generate message for updater
-      //
-      //if you kill the monster, add the current room to the roomsWithMonstersSlain
+        this.monsterAttack();
+        this.playerAttack();
+        this.updateMonsterApperance();
     },
     //Generate monster attack damage and send it down the pipelines
     monsterAttack() {
@@ -145,8 +157,9 @@ export default {
       //evaluate the remaining monster damage
       this.$store.state.monsterRemainingHealth =
         this.$store.state.monsterRemainingHealth - this.playerHitDamage;
-
-      //determine the percent health remaining
+    },
+    updateMonsterApperance(){
+          //determine the percent health remaining
       let levelFour = this.$store.state.monster.monsterHealth;
       let levelThree = this.$store.state.monster.monsterHealth * 0.75;
       let levelTwo = this.$store.state.monster.monsterHealth * 0.5;
@@ -209,11 +222,10 @@ export default {
       //dead
       if (this.$store.state.monsterRemainingHealth <= 0) {
         //this guy is toast Batman!
-        var message =
-          "The " + this.$store.state.monster.monstername + " has been slain!!!";
+        var message = this.$store.state.monster.monsterDiedText 
         this.$store.commit("updateTurnsLog", { message, isAlert: true });
 
-        this.slayBus.$emit("lifeStatus", { isSlain: true });
+        slayBus.$emit("lifeStatus", { isSlain: true });
 
         //add room to array of roomsWithMonstersSlain
         this.$store.commit(
@@ -221,7 +233,13 @@ export default {
           this.$store.state.currentRoom
         );
 
+
+        //TODO
         //guy is deal locl the attack button
+        this.$store.state.attackEnabled = false;
+        if(!this.$store.state.roomsWithItemsFound.includes(this.$store.state.currentRoom)){
+            this.$store.commit('enableSearch', true);
+        }
         //guy is dead, remove from screen
         //change monster text to dead text now and forever
       }

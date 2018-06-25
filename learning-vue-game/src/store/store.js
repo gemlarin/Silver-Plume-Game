@@ -106,6 +106,7 @@ export const store = new Vuex.Store({
         roomsWithMonstersSlain:[], //the rooms that the monster has been slain in
         currentRoom:'',//the room you are currently in
         //searchRoom state data is set automatically from the page view as soon as the page loads
+        canFleeRoom:false,
         searchEnabled:true,
         searchRoom:{
             //if this room actually contains any items
@@ -129,6 +130,9 @@ export const store = new Vuex.Store({
         },
         itemFound(state, item){
             state.playerInventory.push(item);
+        },
+        canFleeRoom(state, data){
+            state.canFleeRoom = data;
         },
         eatFood(state, eat){
             if(state.food > 0 && eat){
@@ -198,7 +202,7 @@ export const store = new Vuex.Store({
             state.guardian = guardian
         },
         updateTurnsLog (state, text) {
-            state.turns.unshift(text);
+            state.turns.push(text);
         },
         updateArmorRating (state, armorrating) {
             state.armorrating = armorrating;

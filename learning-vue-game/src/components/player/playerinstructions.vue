@@ -15,7 +15,7 @@
                                 <h3>Gameplay</h3>
                                 <p>In The Silver Plume, you will embark on an epic quest with uncertain future. Your player may die, alot. Remember the choice that slipped your blood and be sure not to make them again.</p>
                                 <p>To play, you will be reading the story in the right panel and making a selection between several possible actions presented in the section of the story. You are not limited to these decisions however - as your hero avatar has some skills that can be used outside of the main story choices to aid your quest.</p>
-                                <div class="options-nav">
+                                <div id="options-nav">
                                     <router-link to="/instructions2">
                                         <button type="button" class="btn btn-primary btn-lg btn-block">Instructions Continued.
                                         </button>

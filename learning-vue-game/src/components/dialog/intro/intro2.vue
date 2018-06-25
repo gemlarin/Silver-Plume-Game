@@ -17,7 +17,7 @@
                         So, step forth young hero and accept the challenge of the missing mythical Silver Plume!
                     </p>
              
-                    <div class="options-nav">
+                    <div id="options-nav">
                         <router-link to="/intro_3">
                             <button type="button" class="btn btn-primary btn-lg btn-block">I will return with the Silver Plume or not at all!
                             </button>
@@ -32,10 +32,13 @@
 <script>
     export default {
         name: 'intro2',
-            data () {
+                data () {
                 return {
-
+                    canFleeRoom:false
                 }
+            },
+            created(){
+                this.$store.state.disableAllInputs = true;
             }
     }
 </script>

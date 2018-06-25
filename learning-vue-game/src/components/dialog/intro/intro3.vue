@@ -11,7 +11,7 @@
                         
                         <p>You should probably get going.</p>
              
-                    <div class="options-nav">
+                    <div id="options-nav">
                         <router-link to="/p_11">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Head to the location that the hooded figure was last spotted.
                             </button>
@@ -30,10 +30,13 @@
 <script>
     export default {
         name: 'intro3',
-            data () {
+                data () {
                 return {
-
+                    canFleeRoom:false
                 }
+            },
+            created(){
+                this.$store.state.disableAllInputs = true;
             }
     }
 </script>

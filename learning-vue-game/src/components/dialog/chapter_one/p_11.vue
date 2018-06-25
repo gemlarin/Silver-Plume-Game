@@ -10,9 +10,11 @@
                     <transition name="fade" mode="out-in">
                         <p v-if="showText == true">{{ userMessage }}</p>
                     </transition>
-                     <!-- if the room has a monster -->
+                    <transition name="fade" mode="out-in">
                     <p v-if="showMonsterText == true">{{ monster.monsterText }}</p>
-                    <div class="options-nav">
+                    </transition>
+
+                    <div id="options-nav" :class="{disabled:!isNavActive}">
                         <router-link to="/p_12">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Approach the mouth of the valley.
                             </button>
@@ -36,6 +38,7 @@
 <script>
     import { searchBus } from './../../../main.js';
     import { itemBus } from './../../../main.js';
+    import { slayBus } from './../../../main.js';
     export default {
         name: 'p_11',
             data () {
@@ -43,7 +46,8 @@
                     roomID:'p_11',
                     searchDifficulty:1,
                     //do not set both isHiddenItems and isHiddenOption to true.. Can only have one per page.
-                    isHiddenItems:false,//set to false if the room has no hidden items
+                    canFleeRoom:true,
+                    isHiddenItems:true,//set to false if the room has no hidden items
                     isHiddenOption:false,//set to false if the room has hidden path options
                     hasMonster:true, //set to false if no monster in room
                     monster:{
@@ -67,16 +71,21 @@
                     showText:false,//initializer leave set to false. 
                     showMonsterText:false,//initializer leave set to false. 
                     failText:'Nothing of interest was found. Try again?',//message to user if search fails
-                    userMessage:'',//initializer leave string empty
-                    vut:'no'
+                    userMessage:''//initializer. leave blank
                 }
             },
             metaInfo: {
                 titleTemplate: '%s - The Valley'
             },
-            
+            computed: {
+                isNavActive: function () {
+                 return this.$store.state.roomsWithMonstersSlain.includes(this.roomID) || !this.hasMonster;
+                }
+            },
             beforeRouteLeave (to, from, next) {
                 // if you found the hidden object/option this visit to this room, send the roomID down the pipe to lock further search attempts.
+              
+                searchBus.$off('searchConducted');
                 if(this.hiddenItem.foundItem == true){
                     this.$store.commit('roomVisited', this.roomID);
                 }
@@ -91,7 +100,10 @@
                 //{this.isHiddenItems || this.isHiddenOption} closure below 
                 //to include this check inside of a single searchBus.$on. by 
                 //the time this bug was discovered. Fix it if you think you can!!!
- 
+                this.$store.commit("eatFood", { eat: true });
+                this.$store.state.disableAllInputs = false;
+                this.$store.commit('canFleeRoom', this.canFleeRoom);
+
                 if(!this.isHiddenItems && !this.isHiddenOption){
                     searchBus.$on('searchConducted', (data) =>{
                         this.showText = false
@@ -100,17 +112,33 @@
                     });
                 //TO:DO attach to a monsterKilled bus that hides the monester text
                 }
+                //connect to the slayBus to listen for monster death
+                slayBus.$on('lifeStatus', (isSlain) =>{
+                    this.showMonsterText = false;
+                    this.monster.monsterText = this.monster.monsterDiedText;
+                    this.showMonsterText = true;
+                })
                 this.$store.state.currentRoom = this.roomID;
                 //initially enable the attack button, then disable if any below checks are true
                 this.$store.state.attackEnabled = true;
                 //set up the monster if there is one in the room and it has not been slain
                 if(!this.$store.state.roomsWithMonstersSlain.includes(this.roomID) && this.hasMonster){
                     //load up the monster $State
+
                     this.$store.commit('setMonster', this.monster);
+             
                     this.$store.state.maxMonsterHitDamage = this.monster.monsterHitDamage;
                     this.$store.state.monsterRemainingHealth = this.monster.monsterHealth;
                     this.showMonsterText = false;
                     this.userMessage = this.monster.monsterText;
+                    this.showMonsterText = true;
+                    
+                }
+                //set up the room if the monster was previously slain
+                if(this.$store.state.roomsWithMonstersSlain.includes(this.roomID) && this.hasMonster){
+                   
+                    this.showMonsterText = false;
+                    this.monster.monsterText = this.monster.monsterDeadtext;
                     this.showMonsterText = true;
                 }
                 //need to lock attack button if no monster is enabled for this room
@@ -192,6 +220,10 @@
                         //item not yet found in room. Enable the search button
                         this.$store.commit('enableSearch', true);
                     }
+                    if(!this.$store.state.roomsWithMonstersSlain.includes(this.roomID) && this.hasMonster){
+                        this.$store.commit('enableSearch', false);
+                    }
+                    
                 }//end of this.isHiddenItems || this.isHiddenOption closure
             }  //end of created() closure 
 }//end of export default

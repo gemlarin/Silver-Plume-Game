@@ -92,7 +92,6 @@ $text-color-light:lightgrey;
   //background-repeat: repeat;
   width:100vw;
   height:100vh;
-  padding:40px;
 }
 
 html{
@@ -148,8 +147,13 @@ a {
   color: #42b983;
 }
 
-.options-nav{
+#options-nav{
   margin-top:40px;
+}
+
+#options-nav.disabled{
+  opacity:.6;
+  pointer-events: none;
 }
 
 .font--mod-bold{
@@ -221,6 +225,8 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       background: #a73434;
       border-color: #dedede;
       color:#fff;
+      padding-top:7px;
+      padding-bottom:7px;
   }
 
 
@@ -229,6 +235,7 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       border-color: #dedede;
       color:#fff;
       text-shadow: 1px 1px #4b4b4b;
+      
     }
 
     button.btn--alt-red:not(:disabled):not(.disabled):active, button.btn--alt-red:not(:disabled):not(.disabled).active, .show > button.btn--alt-red.dropdown-toggle {

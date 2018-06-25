@@ -1,6 +1,6 @@
 <template>
     <div class="wrap--playeractionsupdater">
-      <div class="row log">
+      <div class="row log" id="log">
           <div class="col-12 columns">
               <ul>
                   <li 
@@ -17,11 +17,50 @@
 
 <script>
 
+
 export default {
   name: 'playersactionupdater',
   data () {
     return {
-  
+        displayTurnsArray: this.$store.state.turns
+    }
+  },
+  methods:{
+      blink(){
+          var myVar = setInterval(myTimer, 1000);
+            function myTimer() {
+                var d = new Date();
+                document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+            }
+      },
+      updateScroll(){
+   
+        var out = document.getElementById("log");
+        
+        //TODO see if you can fix this
+        //ensure that the full tick update has completed before moving scroll position. Hacky but works.
+        setTimeout(function() {
+                var isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;// allow 1px inaccuracy by adding 1
+                if(!isScrolledToBottom){
+                    out.scrollTop = out.scrollHeight - out.clientHeight;
+                }
+        }, 100);      
+    }
+  },
+  watch: {
+    displayTurnsArray: {
+      handler: function (after, before) {
+        // Return the object that changed
+        let changed = after.filter( function( p, idx ) {
+          return Object.keys(p).some( function( prop ) {
+            return p[prop] !== before[idx][prop];
+          })
+        })
+        // Log it
+        console.log("changed");
+            this.updateScroll()
+      },
+      deep: true
     }
   }
 }
@@ -82,7 +121,7 @@ img{
 
 .log ul .monster-turn{
     font-family: 'Zilla Slab', serif;
-    color:rgb(255, 18, 91);
+    color:#ff3573;
     font-weight:700;
 
 }

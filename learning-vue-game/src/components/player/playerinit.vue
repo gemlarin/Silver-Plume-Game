@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                        <div class="options-nav">
+                        <div id="options-nav">
                             <router-link to="/instructions">
                                 <button type="button" class="btn btn-primary btn-lg btn-block btn--alt-red">Save Hero and Continue
                                 </button>
@@ -53,12 +53,16 @@ export default {
   name: 'playerinit',
   data () {
     return {
+        canFleeRoom:false,
         namelength:'',
         dietynamelength:'',
         maxnamelength:10,
         maxdietyamelength:12,
         playermask:''
     }
+  },
+  created(){
+    this.$store.commit('canFleeRoom', this.canFleeRoom);
   },
   computed: {
         
@@ -149,6 +153,9 @@ input{
   border:1px solid #dddddd;
   position:relative;
 }  
+#options-nav{
+    margin-top:30px;
+}
 
 span{
     float:right;
