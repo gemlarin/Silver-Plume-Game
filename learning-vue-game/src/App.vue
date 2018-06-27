@@ -1,6 +1,6 @@
   <template>
   <div id="app">
-      <div class="row">
+      <div class="row main-wrapper-app no-gutters">
         <div class="col-md-5">
           <appPlayer v-show='isOpen'></appPlayer>
           <button class="btn btn-primary" @click="updateMana">MANA</button>
@@ -22,10 +22,11 @@ import { itemBus } from './main.js';
 import { slayBus } from './main.js';
 import Player      from './components/player/Player'
 import DialogBox   from './components/dialog/Dialogbox'
+import './assets/player-knight.svg'
 
 export default {
   name: 'app',
-  image: require('./assets/player-knight.svg'),
+ 
   data () {
     return {
       isOpen:true,
@@ -98,6 +99,9 @@ html{
 }
 .card{
   border-radius:0;
+}
+.main-wrapper-app{
+  max-height:650px;
 }
 .wrap.dialog{
   padding: 30px 20px 20px 15px;
