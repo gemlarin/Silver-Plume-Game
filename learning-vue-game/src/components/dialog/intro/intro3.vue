@@ -12,7 +12,7 @@
                         <p>You should probably get going.</p>
              
                     <div id="options-nav">
-                        <router-link to="/p_11">
+                        <router-link to="/the_valley_p_11">
                             <button type="button" class="btn btn-primary btn-lg btn-block">Head to the location that the hooded figure was last spotted.
                             </button>
                         </router-link>
@@ -32,10 +32,12 @@
         name: 'intro3',
                 data () {
                 return {
-                    canFleeRoom:false
+                    canFleeRoom:false,
+                    overworldMapToDisplay:'overlandmap_p10.png'
                 }
             },
             created(){
+                this.$store.commit('setOverworldMap', this.overworldMapToDisplay);
                 this.$store.state.disableAllInputs = true;
             }
     }

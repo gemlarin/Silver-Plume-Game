@@ -52,15 +52,16 @@
                     var message =  this.$store.state.name + " is healed for 5 points!";
                     this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
                     break;
-                    case 'rp':
+                case 'rp':
                     healBus.$emit('playerHeal', 10);
                     var message =  this.$store.state.name + " is healed for 10 points!";
                     this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
                     break;
-                case 'Papayas':
-                    console.log('Mangoes and papayas are $2.79 a pound.');
-                    // expected output: "Mangoes and papayas are $2.79 a pound."
+                case 'fn':
+                    var message =  "You unfold the note and read its contents:";
+                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:false})
                     break;
+                   
                 default:
                     console.log('Sorry, we are out of ');
                 }

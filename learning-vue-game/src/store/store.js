@@ -96,6 +96,7 @@ export const store = new Vuex.Store({
             monsterDeadtext:''
         },
         maxMonsterHitDamage:0,
+        currentOverlandMap:'',
         monsterRemainingHealth:0,
         attackEnabled:false, //if the atttack button is enabled or not
         playerInventory:[],
@@ -125,6 +126,9 @@ export const store = new Vuex.Store({
         }
     },
     mutations:{
+        setOverworldMap(state, mapid){
+            state.currentOverlandMap = mapid;
+        },
         itemUsed(state, index){
             state.playerInventory.splice(index, 1);
         },

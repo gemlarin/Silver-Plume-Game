@@ -27,10 +27,12 @@
         name: 'intro',
             data () {
                 return {
-                    canFleeRoom:false
+                    canFleeRoom:false,
+                    overworldMapToDisplay:'overlandmap_p10.png'
                 }
             },
             created(){
+                this.$store.commit('setOverworldMap', this.overworldMapToDisplay);
                 this.$store.state.disableAllInputs = true;
             }
     }

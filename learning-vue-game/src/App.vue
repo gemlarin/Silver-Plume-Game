@@ -1,13 +1,13 @@
   <template>
   <div id="app">
       <div class="row main-wrapper-app no-gutters">
-        <div class="col-md-5">
+        <div class="col-md-4">
           <appPlayer v-show='isOpen'></appPlayer>
           <button class="btn btn-primary" @click="updateMana">MANA</button>
           <button class="btn btn-primary" @click="updateHeal">HEAL</button>
           <button class="btn btn-primary" @click='toggle()'>Open/Close</button>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-8">
           <appDialog></appDialog>
         </div>
       </div>

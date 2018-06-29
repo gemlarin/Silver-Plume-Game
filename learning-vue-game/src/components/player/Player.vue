@@ -29,6 +29,7 @@
                     <div class="card--section-avatar">
                         <div class="wrap-avatar">
                             <img class="avatar" :src="require('./../../assets/player-knight.svg')" />
+                            <button class="btn btn-danger temp" @click="toggleMap">Map</button>
                         </div>
                     </div><!-- /.card--section-avatar -->
                 </div>
@@ -93,6 +94,16 @@ export default {
         //Important: set the activestatus before calling updatestatus
        updateStatus(){
            this.$store.commit('updateStatus', 'poisoned')
+       },
+       toggleMap(){
+
+           console.log("path",this.$route.path)
+           if(this.$route.path != '/map' ){
+               this.$router.push('map');
+           }else if(this.$route.path == '/map' ){
+               this.$router.go(-1);
+           }
+            
        }
     },
 
@@ -130,6 +141,12 @@ export default {
     .card--section-avatar{
         overflow:hidden;
         background-color:#4a4a4a;
+    }
+
+    .temp{
+        position:absolute;
+        z-index:100;
+
     }
 
     .wrap-avatar{

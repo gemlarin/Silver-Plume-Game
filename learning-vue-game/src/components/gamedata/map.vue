@@ -17,8 +17,11 @@
     import { searchBus } from './../../main.js';
     import { itemBus } from './../../main.js';
     import { slayBus } from './../../main.js';
+    import './../../assets/overlandmap_p10.png';
+    import './../../assets/overlandmap_p11.png';
     import './../../assets/overlandmap_p12.png';
-    import './../../assets/overlandmap_p13.png';
+    import './../../assets/overlandmap_catscratchin.png'
+
     export default {
         name: 'mapview',
     
@@ -27,23 +30,33 @@
             return {
                isHiddenDoorFound:true,
                counter:1,
+               mapToUse:'',
+               registeredMaps:[
+                   
+               ]
             }
         },
         computed:{
       
         },
-        
+        mounted(){
+            this.mapToUse = this.$store.state.currentOverlandMap;
+            this.showMap(this.mapToUse);
+        },
     
         methods:{
-            p_11(){
-                var tl = new TimelineLite();
-                tl.to("#p_11", 1, {attr:{stroke:'red'}})
+
+            showMap(mapid){
+                var concatpath ="url('/dist/" + mapid + "')";
+                var element = document.getElementById('map');
+                element.style.backgroundImage = concatpath;
             },
 
             nextImage(){
            
                 //counter
                 this.counter = this.counter + 1;
+                var concatpath = "url('dist/overlandmap_p10.png')"
                 var concatpath ="url('/dist/overlandmap_p1" + this.counter + ".png')";
                 var element = document.getElementById('map');
                 element.style.backgroundImage = concatpath;
@@ -112,7 +125,7 @@
 
     .map-wrap{
         display: flex; 
-        min-height:649px;
+        min-height:636px;
         margin-top:10px;
     }
 

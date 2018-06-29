@@ -45,10 +45,10 @@
     }
 
 .fade-enter-active {
-  transition: opacity 1s ease-out;
+  transition: opacity .5s ease-out;
 }
 .fade-leave-active {
-  transition: opacity 1s ease-out;
+  transition: opacity .5s ease-out;
 }
 .fade-enter, .fade-leave-to
 {
