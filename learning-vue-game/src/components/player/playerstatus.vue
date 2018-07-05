@@ -15,6 +15,9 @@
         return {
 
         }
+    },
+    computed:{
+        
     }
     }
 </script>

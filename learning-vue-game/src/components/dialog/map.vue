@@ -1,12 +1,13 @@
-
-
 <template>
     <div class="container">
         <div class="row">
             <div class="col-12 no-padding-left">
                 <div class="map-wrap">
                    <div id="map"></div>
-                   <div class="button --temp" @click="nextImage">NEXT</div>
+                </div>
+                <div class="options-nav"> 
+                    <button type="button" @click="goback" class="btn btn-close btn-block">Close Map
+                    </button>
                 </div>
             </div>
         </div>
@@ -46,6 +47,9 @@
     
         methods:{
 
+            goback(){
+                this.$router.go(-1);
+            },
             showMap(mapid){
                 var concatpath ="url('/dist/" + mapid + "')";
                 var element = document.getElementById('map');
@@ -167,6 +171,21 @@
     .doorOpen{
          fill:red;
         stroke:red;
+    }
+
+    button.btn-close{
+        width:auto;
+        padding: 3px 20px;
+        background-color:#333;
+        background:#333;
+        color:#fff;
+        position:absolute;
+        right:30px;
+        top:70px
+    }
+    button:hover, html [type="button"]:hover{
+        background-color:rgb(75, 74, 74);
+        background:rgb(75, 74, 74)
     }
 
 </style>

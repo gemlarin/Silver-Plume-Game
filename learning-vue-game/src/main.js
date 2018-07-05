@@ -14,7 +14,6 @@ import Meta from 'vue-meta'
 
 
 
-
 Vue.use(BootstrapVue);
 Vue.use(Meta);
 Vue.use(VueRouter);

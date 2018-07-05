@@ -1,6 +1,7 @@
 
         <template>
     <div class="wrap dialog">
+        <form><input type="text" hidden></form>
         <div class="container">
             <div class="row">
                 <div class="col-12">

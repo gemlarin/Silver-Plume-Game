@@ -11,6 +11,7 @@ export const store = new Vuex.Store({
         }],
         armorrating: "",
         attackrating:"",
+        hitValNoBonuses:0,//set inside player actions when player attacks
         attackRatingBonus:0, //benefits from using potions and items found
         name: 'Sir Dante',
         disableAllInputs:false,
@@ -19,17 +20,21 @@ export const store = new Vuex.Store({
         weapon: {
             type:"Steel",
             itemname:"Sword",
-            bonus:1
+            bonus:"",
+            maxDamage:2,
+            minDamage:1
         },
         shield: {
             type:"Steel",
             itemname:"Shield",
-            bonus:1
+            protection:1,
+            bonus:""
         },
         armor: {
             type:"Silver",
             itemname:"Armor",
-            bonus:1
+            protection:1,
+            bonus:""
         },
         status: {
             normal: {
@@ -99,12 +104,14 @@ export const store = new Vuex.Store({
         currentOverlandMap:'',
         monsterRemainingHealth:0,
         attackEnabled:false, //if the atttack button is enabled or not
-        playerInventory:[],
+        playerInventory:[],//items that are usable via activation
+        playerItemsWorn:[],//items that the player has on. Set in Player.vue
         itemUsed:'',
         //new rooms visited are pushed automatically from the page view if the hidden stuff has been found from within that component file.
         roomsVisited:[],//all of the rooms that have been visited
         roomsWithItemsFound:[],//the rooms that items have been found inside of already
         roomsWithMonstersSlain:[], //the rooms that the monster has been slain in
+        journalEntries:[],//pushing in the text from 
         currentRoom:'',//the room you are currently in
         //searchRoom state data is set automatically from the page view as soon as the page loads
         canFleeRoom:false,
@@ -129,11 +136,17 @@ export const store = new Vuex.Store({
         setOverworldMap(state, mapid){
             state.currentOverlandMap = mapid;
         },
+        journalEntry(state, entry){
+            state.journalEntries.push(entry);
+        },
         itemUsed(state, index){
             state.playerInventory.splice(index, 1);
         },
         itemFound(state, item){
             state.playerInventory.push(item);
+        },
+        itemWorn(state, item){
+            state.playerItemsWorn.push(item);
         },
         canFleeRoom(state, data){
             state.canFleeRoom = data;
@@ -174,26 +187,27 @@ export const store = new Vuex.Store({
             state.activestatus = status;
 
            if(state.activestatus === 'normal'){
-               state.armorrating = state.status.normal.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.normal.effects.attack
+            
+               state.armorrating = state.status.normal.effects.armor + state.shield.protection + state.armor.protection;
+               state.attackrating = state.weapon.maxDamage + state.status.normal.effects.attack
                state.holdstat = state.status.normal
            }
            //drunk modifier
            if(state.activestatus === 'drunk'){
-               state.armorrating= state.status.drunk.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.drunk.effects.attack
+               state.armorrating= state.status.drunk.effects.armor + state.shield.protection + state.armor.protection;
+               state.attackrating = state.weapon.protection + state.status.drunk.effects.attack
                state.holdstat = state.status.drunk
            }
            //poisoned modifier
            if(state.activestatus === 'poisoned'){
-               state.armorrating = state.status.poisoned.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.poisoned.effects.attack
+               state.armorrating = state.status.poisoned.effects.armor + state.shield.protection + state.armor.protection;
+               state.attackrating = state.weapon.protection + state.status.poisoned.effects.attack
                state.holdstat = state.status.poisoned
            }
            //dizzy modifier
            if(state.activestatus === 'dizzy'){
-               state.armorrating = state.status.dizzy.effects.armor + state.shield.bonus + state.armor.bonus;
-               state.attackrating = state.weapon.bonus + state.status.dizzy.effects.attack
+               state.armorrating = state.status.dizzy.effects.armor + state.shield.protection + state.armor.protection;
+               state.attackrating = state.weapon.protection + state.status.dizzy.effects.attack
                state.holdstat = state.status.dizzy
            }
               

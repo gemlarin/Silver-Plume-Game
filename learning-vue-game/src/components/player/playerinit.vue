@@ -58,7 +58,9 @@ export default {
         dietynamelength:'',
         maxnamelength:10,
         maxdietyamelength:12,
-        playermask:''
+        playermask:'',
+        canFleeRoom:false,
+        overworldMapToDisplay:'overlandmap_p10.png'
     }
   },
   created(){
@@ -90,12 +92,15 @@ export default {
             }
         }
     },
+
     created(){
+        this.$store.commit('setOverworldMap', this.overworldMapToDisplay);
+                this.$store.state.disableAllInputs = true;
         this.$store.state.disableAllInputs = true;
     },
     beforeRouteLeave (to, from, next) {
         this.$store.state.disableAllInputs = false;
-        var message =  "Hello... " + this.$store.state.name + "I am your scrying tablet!" + this.$store.state.guardian + " will communicate important status messages to you here."
+        var message =  "Hello... " + this.$store.state.name + "I am your scrying tablet! " + this.$store.state.guardian + " will communicate important status messages to you here."
         this.$store.commit('updateTurnsLog', {message, isPlayer:true});
         //this.$store.state.roomsVisited.push(this.roomID);
         next()

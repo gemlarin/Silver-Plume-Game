@@ -29,13 +29,17 @@
                     <div class="card--section-avatar">
                         <div class="wrap-avatar">
                             <img class="avatar" :src="require('./../../assets/player-knight.svg')" />
-                            <button class="btn btn-danger temp" @click="toggleMap">Map</button>
                         </div>
                     </div><!-- /.card--section-avatar -->
                 </div>
                 <div class="col-md-7 col-sm-7">
                     <appPlayerstats>
                     </appPlayerstats>
+                    <div class="button--wrapper">
+                        <div class="go-wide" @click="openMap">Map</div>
+
+                        <div class="go-wide journal"  @click="openJournal">Journal</div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -53,111 +57,163 @@
             </div>
         </div><!-- /.card -->
         <br><br>
-           <button @click="updateStatus">Update Status</button>
+           <button @click="updateStatus" :class="{ active: isActive }">Update Status</button>
+            <button @click="openJournal">Journal</button>
     </div><!-- /#playercard -->
  
 </template>
 
 <script>
-
-import playerhealth  from './playerhealth'
-import playermana    from './playermana'
-import playerfood    from './playerfood'
-import playergold    from './playergold'
-import playerstatus  from './playerstatus'
-import playerstats   from './playerstats'
-import playeractions from './playeractions'
-import playeractionsupdater from './playersactionupdater'
+import playerhealth from "./playerhealth";
+import playermana from "./playermana";
+import playerfood from "./playerfood";
+import playergold from "./playergold";
+import playerstatus from "./playerstatus";
+import playerstats from "./playerstats";
+import playeractions from "./playeractions";
+import playeractionsupdater from "./playersactionupdater";
+import "./../../assets/player-knight.svg";
+import "./../../assets/map-button-bg.png";
+import "./../../assets/map-button-bg-hover.png";
 
 export default {
-    name: 'Dante',
-    data: function(){
-        return{
-            status:2
-        }
-    },
-    computed: {
-        bonuses: function () {
-            return this.$store.state.armor.bonus + this.$store.state.shield.bonus 
-        }  
-    },
-    created: function () {
-        //Need to initialize the hero values
-        this.$store.state.armorrating = this.$store.state.status.normal.effects.armor + this.$store.state.shield.bonus + this.$store.state.armor.bonus;
-        this.$store.state.attackrating = this.$store.state.weapon.bonus + this.$store.state.status.normal.effects.attack
-        //init the staus as normal when game firsl loads
-        this.$store.commit('updateStatus', this.$store.state.activestatus)
+  name: "Dante",
+  data: function() {
+    return {
+      status: 2,
+      isActive: false,
+      isJournalActive:false
+    };
+  },
+  computed: {
+    bonuses: function() {
+      return (
+        this.$store.state.armor.protection + this.$store.state.shield.protection
+      );
+    }
+  },
+  mounted: function() {},
+  beforeDestroy: function() {
+     // this.isJournalActive = false;
+     // this.isActive = false;
+  },
+  created: function() {
+    //Need to initialize the hero values
 
+    //Need to initialize the hero values
+    this.$store.state.armorrating =
+      this.$store.state.status.normal.effects.armor +
+      this.$store.state.shield.protection +
+      this.$store.state.armor.protection;
+    this.$store.state.attackrating =
+      this.$store.state.weapon.maxDamage +
+      this.$store.state.status.normal.effects.attack;
+    //init the staus as normal when game firsl loads
+    this.$store.commit("updateStatus", "normal");
+  },
+  methods: {
+    //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
+    //Important: set the activestatus before calling updatestatus
+    updateStatus() {
+      this.$store.commit("updateStatus", "drunk");
     },
-    methods:{
-        //TO:DO add a method that is triggered by the statusBus which first sets the status number and then calls updateStatus
-        //Important: set the activestatus before calling updatestatus
-       updateStatus(){
-           this.$store.commit('updateStatus', 'poisoned')
-       },
-       toggleMap(){
+    openJournal() {
+        this.$router.push("journal");
+    },
+    openMap() {
+       this.$router.push("map");     
+    },
+  },
 
-           console.log("path",this.$route.path)
-           if(this.$route.path != '/map' ){
-               this.$router.push('map');
-           }else if(this.$route.path == '/map' ){
-               this.$router.go(-1);
-           }
-            
-       }
-    },
-
-    components: {
-        appPlayerhealth:   playerhealth,
-        appPlayermana:     playermana,
-        appPlayerfood:     playerfood,
-        appPlayergold:     playergold,
-        appPlayerstatus:   playerstatus,
-        appPlayerstats:    playerstats,
-        appPlayeractions:  playeractions,
-        appPlayeractionsupdater:  playeractionsupdater
-    },
-}
+  components: {
+    appPlayerhealth: playerhealth,
+    appPlayermana: playermana,
+    appPlayerfood: playerfood,
+    appPlayergold: playergold,
+    appPlayerstatus: playerstatus,
+    appPlayerstats: playerstats,
+    appPlayeractions: playeractions,
+    appPlayeractionsupdater: playeractionsupdater
+  }
+};
 </script>
 
-<style scoped>
-    #playercard{
-        padding:10px;
-    }
-    .card{
-        height:100%;
-        display:flex;
-        border:8px solid #2f2f2f;
-        background-color:#2f2f2f;
-        position:relative;
+<style scoped lang="scss">
+#playercard {
+  padding: 10px;
+}
 
-    }
-    .card--section-header{
-        background-color:#3f3e3f;
-        width:100%;
-        min-height:90px;
-        margin-bottom:7px;
-    }
-    .card--section-avatar{
-        overflow:hidden;
-        background-color:#4a4a4a;
-    }
+.button--wrapper {
+  display: flex;
+}
 
-    .temp{
-        position:absolute;
-        z-index:100;
+.go-wide {
+  display: flex;
+  margin-left: 8px;
+  height: 53px;
+  text-shadow: 1px 1px #1b1b1b;
+  font-size: 16px;
+  justify-content: center;
+  flex-grow: 1;
+  flex-wrap: nowrap;
+  align-items: center;
+  background: url(./../../assets/map-button-bg.png) no-repeat center center;
+  color: #46b3ce;
+  //-webkit-background-size: cover;
+  //-moz-background-size: cover;
+  //-o-background-size: cover;
+   background-size: 300px;
+  background-color: #3f3e3f;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.go-wide:hover {
+  color: #73dcf7;
+}
 
-    }
+.go-wide:active {
 
-    .wrap-avatar{
-        height:200px;
-    }
-    .avatar{
-        height:230px;
-        padding-top:10px;
-        padding-left:10px;
-        padding-right:10px;
-    }
+  color: #7fce1e;
+  
+}
+
+.journal{
+    color: #46b3ce;
+    background: url(./../../assets/journal-button-bg.png) no-repeat center center;
+    background-size: 290px;
+}
+.card {
+  height: 100%;
+  display: flex;
+  border: 8px solid #2f2f2f;
+  background-color: #2f2f2f;
+  position: relative;
+}
+.card--section-header {
+  background-color: #3f3e3f;
+  width: 100%;
+  min-height: 90px;
+  margin-bottom: 7px;
+}
+.card--section-avatar {
+  overflow: hidden;
+  background-color: #4a4a4a;
+}
+
+.temp {
+  position: absolute;
+  z-index: 100;
+}
+
+.wrap-avatar {
+  height: 200px;
+}
+.avatar {
+  height: 230px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 </style>
 
 

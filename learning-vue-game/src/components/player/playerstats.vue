@@ -1,13 +1,12 @@
 <template>
     <div class="wrap-stats">
-        <h5>Name: <span class="font--mod-bold font--mod-size-large">{{ this.$store.state.name }}</span></h5>
-        <h5>Guardian: <span class="font--mod-bold">{{ this.$store.state.guardian }}</span></h5>
+        <h5>Name: <span class="font--mod-bold font--mod-size-large color--offwhite">{{ this.$store.state.name }}</span></h5>
+        <h5>Guardian: <span class="font--mod-bold color--offwhite">{{ this.$store.state.guardian }}</span></h5>
         <br>
-        <h5>Weapon: <span class="font--mod-bold">{{ this.$store.state.weapon.type }} {{ this.$store.state.weapon.itemname }} <span class="emphasize" :v-show="this.$store.state.weapon.bonus"> +{{ this.$store.state.weapon.bonus}}</span></span></h5>
-        <h5>Shield: <span class="font--mod-bold">{{ this.$store.state.shield.type }} {{ this.$store.state.shield.itemname }}<span class="emphasize" :v-if="this.$store.state.shield.bonus"> +{{ this.$store.state.shield.bonus}}</span></span></h5>
-        <h5>Armor: <span class="font--mod-bold">{{ this.$store.state.armor.type }} {{ this.$store.state.armor.itemname }}<span class="emphasize" :v-if="this.$store.state.armor.bonus"> +{{ this.$store.state.armor.bonus}}</span></span></h5>
-        <h5>Armor Rating: <span class="font--mod-bold emphasize"> +{{ this.$store.state.armorrating }}</span></h5>
-        <h5>Attack Rating: <span class="font--mod-bold emphasize"> +{{ this.$store.state.attackrating }}</span></h5>
+        
+        
+        <h5>Armor Rating: <span class="font--mod-bold emphasize"> +{{ this.totalarmorbonus }}</span></h5>
+        <h5>Attack Damage: <span class="font--mod-bold emphasize"> {{ this.$store.state.weapon.minDamage }} - {{ getMaxDamage }}</span></h5>
 
     </div>
 </template>
@@ -23,7 +22,10 @@ export default {
   },
      computed: {
          totalarmorbonus: function () {
-             return this.playerarmorbonus + this.playerarmor.bonus + this.playershield.bonus;
+             return this.$store.state.shield.protection + this.$store.state.armor.protection + this.$store.state.holdstat.effects.armor;
+         },
+         getMaxDamage: function () {
+             return this.$store.state.weapon.maxDamage + this.$store.state.attackRatingBonus + this.$store.state.holdstat.effects.attack
          }
     }
 }
@@ -31,8 +33,9 @@ export default {
 <style scoped>
     .wrap-stats{
         background-color: #3f3e3f;
-        height:200px;
+        height:140px;
         margin-left:7px;
+        margin-bottom:7px;
         padding:20px;
         padding-top:15px;
     }
@@ -52,4 +55,7 @@ export default {
         color:rgb(184, 184, 184);
     }
 
+    .color--offwhite{
+        color:#e4e6d7
+    }
 </style>

@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1>Inventory</h1>
+                    <h1>Dead</h1>
                     <img class="teardrop" :src="require('./../../assets/lion-crest.png')" />
                     <hr>
                         <ul>
@@ -56,46 +56,14 @@
     import { lifeBus } from './../../main.js';
     import { healBus } from './../../main.js';
     export default {
-        name: 'inventory',
+        name: 'death',
         data () {
             return {
                 itemUsed:''
             }
         },
         methods:{
-            //allows us to return to the previous view when the inventory is closed
-            goback: function(){
-                this.$router.go(-1);
-            },
-            useItem: function(index, item){
-                console.log('index: ' + index)
-                console.log('removeitem: ' + item)
-                //this calls a splice (index, 1) to remove the item you selected from the playerInventory[] state. 
-                this.$store.commit('itemUsed', index);
-
-                //switch through the items to commit their effect(s).
-                switch (item) {
-                case 'gp':
-                    healBus.$emit('playerHeal', 5);
-                    var message =  this.$store.state.name + " is healed for 5 points!";
-                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
-                    break;
-                case 'rp':
-                    healBus.$emit('playerHeal', 10);
-                    var message =  this.$store.state.name + " is healed for 10 points!";
-                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:true})
-                    break;
-                case 'fn':
-                    var message =  "Look for my tracks in the high krags. Follow them to a narrow crevace. Say the words, HANKY PANKY OPEN SPANKY to reveal the way to me.";
-                    this.$store.commit('updateTurnsLog', {message, isPlayer:true, isHeal:false});
-                    var journalEntryTitle = "The Witches Note"
-                    this.$store.commit('journalEntry', {journalText:message, journalEntryTitle:journalEntryTitle})
-                    break;
-                   
-                default:
-                    console.log('Sorry, we are out of ');
-                }
-            }
+         
         }
     }
 </script>

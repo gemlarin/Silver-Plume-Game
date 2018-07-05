@@ -5,8 +5,15 @@
                <button 
                 class="button--style-alt" 
                 @click="updateHealth"
-                :disabled="!this.$store.state.attackEnabled || this.$route.path == '*' || this.$store.state.disableAllInputs"
-                :class="{ disabled: !this.$store.state.attackEnabled || this.$route.path == '*' || this.$store.state.disableAllInputs }"
+                :disabled="
+                  !this.$store.state.attackEnabled || 
+                  this.$route.path == '*' || 
+                  this.$store.state.disableAllInputs"
+                :class="{ disabled: 
+                  !this.$store.state.attackEnabled || 
+                  this.$route.path == '*' || 
+                  this.$store.state.disableAllInputs 
+                  }"
                 >
                 Attack
                 </button>
@@ -14,11 +21,19 @@
                <button 
                 class="button--style-alt"
                 @click="fleeRoom"
-                :disabled="this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs ||
-                !this.$store.state.canFleeRoom || isFleeAllowed
+                :disabled="
+                  this.$route.path == '' || 
+                  this.$route.path == '/' || 
+                  this.$store.state.disableAllInputs ||
+                  !this.$store.state.canFleeRoom || 
+                  isFleeAllowed
                 "
-                :class="{ disabled: this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs ||
-                !this.$store.state.canFleeRoom || isFleeAllowed }"
+                :class="{ disabled: 
+                  this.$route.path == '' || 
+                  this.$route.path == '/' || 
+                  this.$store.state.disableAllInputs ||
+                  !this.$store.state.canFleeRoom || 
+                  isFleeAllowed }"
                 >
                 Flee
                </button>
@@ -26,16 +41,30 @@
                <button 
                 class="button--style-alt" 
                 @click="searchRoom"
-                :disabled="!this.$store.state.searchEnabled || this.$route.path == '/inventory' || this.$store.state.disableAllInputs"
-                :class="{ disabled: !this.$store.state.searchEnabled ||this.$route.path == '/inventory' || this.$store.state.disableAllInputs }">
+                :disabled="
+                  !this.$store.state.searchEnabled || 
+                  this.$route.path == '/inventory' || this.$store.state.disableAllInputs"
+                :class="{ disabled: 
+                  !this.$store.state.searchEnabled 
+                  ||this.$route.path == '/inventory' || this.$store.state.disableAllInputs }"
+                  >
                 Search
                </button>
                <!-- Eat button -->
                <button class="button--style-alt" 
-               @click="eatFood"
-               :disabled="this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs || this.$store.state.food  === 0 ||this.$store.state.currentHealth === 20"
-                :class="{ disabled: this.$route.path == '' || this.$route.path == '/' || this.$store.state.disableAllInputs || this.$store.state.food === 0 ||this.$store.state.currentHealth === 20
-                }"
+                  @click="eatFood"
+                  :disabled="
+                    this.$route.path == '' || 
+                    this.$route.path == '/' || 
+                    this.$store.state.disableAllInputs || 
+                    this.$store.state.food  === 0 ||
+                    this.$store.state.currentHealth === 20"
+                :class="{ disabled: 
+                    this.$route.path == '' || 
+                    this.$route.path == '/' || 
+                    this.$store.state.disableAllInputs || 
+                    this.$store.state.food  === 0 ||
+                    this.$store.state.currentHealth === 20}"
                >
                Eat
                </button>
@@ -43,16 +72,24 @@
                 <!-- disabled whnever $store returns praydisabled or when /inventory view is loaded -->
                 <button
                     @click="isPrayDisabled"
-                    :disabled="this.$store.state.praydisabled || this.$route.path == '/inventory' || this.$store.state.currentHealth == 20 || this.$store.state.disableAllInputs" 
-                    :class="{ disabled: this.$store.state.praydisabled || this.$route.path == '/inventory' || this.$store.state.disableAllInputs }"
+                    :disabled="
+                      this.$store.state.praydisabled || 
+                      this.$route.path == '/inventory' || this.$store.state.currentHealth == 20 || this.$store.state.disableAllInputs" 
+                    :class="{ disabled: 
+                      this.$store.state.praydisabled || 
+                      this.$route.path == '/inventory' || this.$store.state.disableAllInputs 
+                      }"
                     class="button--style-alt">
                     Pray
                 </button>
                 <!-- Bag / Inventory button -->
                 <router-link to="/inventory">
                     <button 
-                    :disabled="this.$route.path == '/inventory' || this.$store.state.disableAllInputs"
-                    :class="{ disabled: this.$route.path == '/inventory' || this.$store.state.disableAllInputs}"
+                    :disabled="
+                      this.$route.path == '/inventory' || this.$store.state.disableAllInputs"
+                    :class="{ disabled: 
+                      this.$route.path == '/inventory' ||         this.$store.state.disableAllInputs 
+                    }"
                     class="button--style-alt routerlink">
                     Bag
                     </button>
@@ -75,15 +112,26 @@ export default {
       healFor: 0,
       maxHeal: 0,
       playerHitDamage: 1,
-      monsterState: "excellent"
+      hitMinVal:3,//set the min number need returned for attack to hit. High = harder to hit.
+      hitMaxValue:10,
+      monsterState: "excellent",
+      fightEngaged:false
     };
   },
   computed: {
         isFleeAllowed: function () {
         return this.$store.state.roomsWithMonstersSlain.includes(this.$store.state.currentRoom);
+        },
+        isEatDisabled(){
+          return this.$route.path == '' || 
+          this.$route.path == '/' || 
+          this.$store.state.disableAllInputs || 
+          this.$store.state.food  === 0 ||
+          this.$store.state.currentHealth === 20
         }
     },
   methods: {
+    
     updateStatus(stat) {
       this.$store.commit("updateStatus", stat);
     },
@@ -110,12 +158,19 @@ export default {
         var message = "The food was nourishing. You have gained 5 health!";
         this.$store.commit("updateTurnsLog", { message, isHeal: true });
       }
+
+      if(this.fightEngaged){
+        this.monsterAttack();
+      }
     },
     searchRoom() {
-      //emitted to the individual dialogue page views
+      //emitted to the individual (currently loaded) dialogue page views to let them know you requested a search of that room.
       searchBus.$emit("searchConducted", { isSearched: true });
     },
     updateHealth() {
+        if(!this.fightEngaged){
+          this.fightEngaged = true;
+        }
         this.monsterAttack();
         this.playerAttack();
         this.updateMonsterApperance();
@@ -131,32 +186,63 @@ export default {
         isFood: false
       });
       //create the monster hits player turns log message
-      var message =
+
+      if(this.$store.state.adjustedDamage == 0){
+      let message =
+        this.$store.state.monster.monstername +
+        " attacks and misses you.";
+      this.$store.commit("updateTurnsLog", { message, isMonster: true });
+      }else{
+      let message =
         this.$store.state.monster.monstername +
         " hits " +
         this.$store.state.name +
         " for " +
         this.$store.state.adjustedDamage +
         " damage!";
-      this.$store.commit("updateTurnsLog", { message, isMonster: true });
+        this.$store.commit("updateTurnsLog", { message, isMonster: true });
+      }
+      
     },
     playerAttack() {
       //calc total damage. TODO: add difficulty modifier
-      this.playerHitDamage =
-        this.$store.state.attackrating + this.$store.state.attackRatingBonus;
 
-      var message =
+      //determine if the attack landed
+      var hitTestVal = this.getRandomNumber(this.hitMinVal, this.hitMaxValue);
+    
+      //if you land the hit
+      if(hitTestVal >= this.hitMinVal){
+         
+         //attackrating set in player.vue
+         //get the weapon damage with no bonuses applied
+         this.$store.state.hitValNoBonuses = this.getRandomNumber(this.$store.state.weapon.minDamage, this.$store.state.weapon.maxDamage);
+
+          //get the weapon damage with bonuses applied and set it to this.playerHitDamage
+          this.playerHitDamage =
+          this.$store.state.hitValNoBonuses + this.$store.state.attackRatingBonus + this.$store.state.holdstat.effects.attack;
+
+        var message =
         this.$store.state.name +
         " hits " +
         this.$store.state.monster.monstername +
         " for " +
-        this.$store.state.attackrating +
+        this.playerHitDamage +
         " damage!";
       this.$store.commit("updateTurnsLog", { message, isPlayer: true });
 
       //evaluate the remaining monster damage
-      this.$store.state.monsterRemainingHealth =
-        this.$store.state.monsterRemainingHealth - this.playerHitDamage;
+      this.$store.state.monsterRemainingHealth = this.$store.state.monsterRemainingHealth - this.playerHitDamage;
+
+      }else{
+         //create the player misses monster message
+        var message = this.$store.state.name + " tries his best but misses "
+          + this.$store.state.monster.monstername;
+          this.$store.commit("updateTurnsLog", { message, isPlayer: true });
+      }
+
+    },
+    getRandomNumber(min, max){
+       return Math.floor(Math.random()*(max-min+1)+min);
     },
     updateMonsterApperance(){
           //determine the percent health remaining
@@ -233,15 +319,10 @@ export default {
           this.$store.state.currentRoom
         );
 
-
-        //TODO
-        //guy is deal locl the attack button
         this.$store.state.attackEnabled = false;
         if(!this.$store.state.roomsWithItemsFound.includes(this.$store.state.currentRoom)){
             this.$store.commit('enableSearch', true);
         }
-        //guy is dead, remove from screen
-        //change monster text to dead text now and forever
       }
     },
     //toggle praydisabled on the pray button
@@ -302,7 +383,6 @@ html [type="button"],
   margin: 0 0 10px 0;
   outline: none;
   margin-bottom: 0;
-
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;

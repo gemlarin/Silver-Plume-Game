@@ -7,7 +7,7 @@
                     <img class="teardrop" :src="require('./../../../assets/lion-crest.png')" />
                     <hr>
                     <p>
-                        There are only two ways that the theif could have escaped the Valley of the Kings Castle. The high craggy trail, or the graceful sloping valley floor. </p>
+                        There are only two ways that the theif could have escaped the City by land. The high craggy trail, or the graceful sloping valley floor. </p>
 
                       <p>The craggy trail winds through the Cat Scratch Pass down narrow passages, over and through the remnants of previous rockfalls. Not passable by cart, nor horse, it is generally safe for foot travel and is the fastest path to the Cat Scratch Inn. There are rumors of an old crone living among the crags, though noone has actually located any form of dwelling.</p>  
 
@@ -107,7 +107,6 @@
                 //{this.isHiddenItems || this.isHiddenOption} closure below 
                 //to include this check inside of a single searchBus.$on. by 
                 //the time this bug was discovered. Fix it if you think you can!!!
-                //this.$store.commit("eatFood", { eat: true });
 
                 this.$store.commit('canFleeRoom', this.canFleeRoom);
 
@@ -133,7 +132,6 @@
                     //load up the monster $State
 
                     this.$store.commit('setMonster', this.monster);
-             
                     this.$store.state.maxMonsterHitDamage = this.monster.monsterHitDamage;
                     this.$store.state.monsterRemainingHealth = this.monster.monsterHealth;
                     this.showMonsterText = false;

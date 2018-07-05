@@ -12,14 +12,9 @@
                                 
                                 <h3>The Interface</h3>
                                 <ul>
-                                    <li><span>Name:</span> This is the name you assigned your avatar at the beginning of gameplay.</li>
-                                    <li>Guardian: Your guardian is your choice. Your guardian watches over your progress lending advice and offering healing. Your guardian is usually quite busy, so don't expect assistance more than once every game day (1 hour cooldown)</li>
-                                    <li>Status: Your heros surrent physical status. Bonuses and banes applied are listed below the status.</li>
-                                    <li>Weapon: The weapon you are currently weilding. It's damage rating is listed next to the weapon name.</li>
-                                    <li>Shield: The shield you are currently holding, plus its armore rating.</li>
-                                    <li>Armor: The armor you are currently holding, plus its armore rating.</li>
+                                    <li>Status: Your heros current physical status. Bonuses and banes applied are listed below the status.</li>
                                     <li>Armor Rating: Your combined armor rating includes all armor ratings plus any bonuses or banes applied to your player status.</li>
-                                    <li>Attack Rating: Your combined attack rating includes your weapon rating plus any bonuses or banes applied to your player status.</li>
+                                    <li>Attack Damage: Your combined attack rating includes your weapon rating plus any bonuses or banes applied to your player status. This is represented as a range of MIN - MAX attack.</li>
                                 </ul>
                                  <div id="options-nav">
                                     <router-link to="/intro_1">

@@ -57,7 +57,6 @@ export default {
   
   },
   created() {
-
     //itemBus receives its data from the individual dialog pages if the item defined there is found via search
     //If anyone ever reads this and asks WTF? I put it here because I needed a common parent of the dialog pages to pick up the data coming down the pipe and there were some weird conflicts when trying to access $store from inside the $ON of another vue. IDK. THis fixed it, so whatever.
     itemBus.$on('newItem', (data) =>{
@@ -122,7 +121,7 @@ h1, h2 {
   margin-bottom:20px;
 }
 h1{
-  font-size:2.7em;
+  font-size:3em;
 }
 h2{
   font-size:2.4em;
@@ -215,6 +214,11 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e2e2e2',GradientType=0 ); /* IE6-9 */
     }
 
+  button{
+    border-style: solid;
+    border-width:1px;
+  }
+
   button:hover, html [type="button"]:hover, [type="reset"]:hover, [type="submit"]:hover{
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f7f7f7+10,ffffff+91,efefef+100 */
       background: #ffffff; /* Old browsers */
@@ -249,6 +253,23 @@ button, html [type="button"], [type="reset"], [type="submit"]{
       background: #ca4242;
       border-color: #dedede;
       text-shadow: 1px 1px #4b4b4b;
+  }
+
+  button.btn-close{
+    width:auto;
+    padding: 3px 20px;
+    background-color:#333;
+    background:#333;
+    color:#fff;
+    position:absolute;
+    right:15px;
+    top:70px
+  }
+  button.btn-close:hover{
+    background:rgb(85, 85, 85);
+  }
+  button.btn-close:active{
+    background:rgb(85, 85, 85);
   }
 
   //animation stuff

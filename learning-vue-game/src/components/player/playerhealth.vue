@@ -25,8 +25,11 @@ export default {
   computed:{
     //determine if basehealth mod (like poison status) exists, if not, set to maxhealth
     basehealth: function(){
+    
        if(this.$store.state.holdstat.effects.basehealth){
+        
          var temphealth = this.$store.state.holdstat.effects.basehealth
+     
          if(this.$store.state.currentHealth >= temphealth){
             this.$store.state.currentHealth = temphealth;
          }
@@ -34,6 +37,7 @@ export default {
        }
        else{
          return this.$store.state.maxhealth;
+    
        }
     }
   },
@@ -42,7 +46,6 @@ export default {
     lifeBus.$on('newDamage', (data) =>{
       this.$store.state.newDamage = data.damage;
       if(!data.isFood){
-
         this.$store.state.adjustedDamage = 
         this.$store.state.newDamage - 
         (this.playerstatus.effects.armor + 
@@ -64,8 +67,11 @@ export default {
       if(this.$store.state.currentHealth > this.$store.state.maxhealth){
         this.$store.state.currentHealth = this.$store.state.maxhealth;
       }
+
+      //DEATH HAPPENS HERE
       if(this.$store.state.currentHealth < 0){
         this.$store.state.currentHealth = 0;
+       this.$router.push("death");     
       }
 
          
