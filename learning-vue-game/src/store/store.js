@@ -177,10 +177,6 @@ export const store = new Vuex.Store({
             state.monster.monsterText = monsterPayload.monsterText;
             state.monster.monsterDiedText = monsterPayload.monsterDiedText; 
             state.monster.monsterDeadtext = monsterPayload.monsterDeadtext;
-            console.log("HAS____MONSTER____!!!");
-            console.log("monsterHitDamage",state.monster.monsterHitDamage);
-            console.log("monsterHealth",state.monster.monsterHealth);
-            console.log("monstername",state.monster.monsterName);
         },
         updateStatus(state, status){
             //normal modifier
