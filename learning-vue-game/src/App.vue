@@ -3,8 +3,8 @@
       <div class="row main-wrapper-app no-gutters">
         <div class="col-md-4">
           <appPlayer v-show='isOpen'></appPlayer>
-          <button class="btn btn-primary" @click="updateMana">MANA</button>
-          <button class="btn btn-primary" @click="updateHeal">HEAL</button>
+          <button class="btn btn-primary" @click="purchase()">Buy Stuff</button>
+          <button class="btn btn-primary" @click="pay()">Pay yourself</button>
           <button class="btn btn-primary" @click='toggle()'>Open/Close</button>
         </div>
         <div class="col-md-8">
@@ -45,12 +45,12 @@ export default {
         this.isOpen = !this.isOpen
       },
       //temporary: for testing. remove after the manaBus emitters are configured
-     updateMana() {
-       manaBus.$emit('usedMana', this.playermana)
+     purchase() {
+       this.$store.commit("updateGold", { value:3, type:"buy"});
      },
       //temporary: for testing. remove after the healBus emitters are configured
-     updateHeal() {
-       healBus.$emit('playerHeal', this.heal)
+     pay() {
+       this.$store.commit("updateGold", { value:5, type:"pay"});
      }
   },
   computed:{

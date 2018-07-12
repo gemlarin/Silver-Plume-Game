@@ -51,8 +51,6 @@ export default {
         (this.playerstatus.effects.armor + 
         this.playerbonuses);
 
-        console.log("adj: " + this.$store.state.adjustedDamage)
-        console.log("norm: " + data.damage)
         if(this.$store.state.adjustedDamage < 0 ){
           this.$store.state.adjustedDamage = 0;
         }
@@ -61,7 +59,6 @@ export default {
 
       }
       if(data.isFood){
-        console.log('is food')
         this.$store.state.currentHealth = this.$store.state.currentHealth + this.$store.state.newDamage;
       }
       if(this.$store.state.currentHealth > this.$store.state.maxhealth){

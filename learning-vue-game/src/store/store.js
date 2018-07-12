@@ -178,6 +178,20 @@ export const store = new Vuex.Store({
             state.monster.monsterDiedText = monsterPayload.monsterDiedText; 
             state.monster.monsterDeadtext = monsterPayload.monsterDeadtext;
         },
+        updateGold(state, amount){
+            if(amount.type === "pay"){
+                state.gold = state.gold + amount.value;
+            }else if(amount.type === "buy"){
+                if((state.gold - amount.value >= 0)){
+                    state.gold = state.gold - amount.value;
+                }
+                else{
+                    console.error("Error: Insufficient gold for purchase");
+                }
+            }else{
+                console.error("Error: updateGold type must be 'pay' or 'buy' only");
+            }
+        },
         updateStatus(state, status){
             //normal modifier
             state.activestatus = status;
@@ -225,8 +239,6 @@ export const store = new Vuex.Store({
             state.armorrating = attackrating;
         }
         
-    },
-    getters:{
-       
     }
+
 })

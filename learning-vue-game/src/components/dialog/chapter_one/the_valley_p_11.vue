@@ -52,9 +52,9 @@ export default {
     return {
       roomID: "p_11", //****** needs to emmitt to parent******//
       searchDifficulty: 1,
-      overworldMapToDisplay: "overlandmap_p10.png", //****** needs to emmitt to parent******//
+      overworldMapToDisplay: "overlandmap_p10.png", //****** needs to emit to parent******//
       //do not set both isHiddenItems and isHiddenOption to true.. Can only have one per page.
-      canFleeRoom: true, //****** needs to emmitt to parent******//
+      canFleeRoom: true, //****** needs to emit to parent******//
       isFirstVisitOnly: true, //dont touch this. Test against this for text that you only want displayed on a first visit to the room.
       isHiddenItems: true, //set to false if the room has no hidden items //****** needs to emmitt to parent******//
       isHiddenOption: true, //set to false if the room has hidden path options //****** needs to emmitt to parent******//
@@ -106,12 +106,25 @@ export default {
         this.roomNotVisited();
       }
     },
+    updateStoryMessaging(usermessage, messagetype){
+        if(messagetype == "user"){
+          this.showText = false;
+          this.userMessage = usermessage;
+          this.showText = true;
+        }
+        if(messagetype == "monster"){
+            this.showMonsterText = false;
+            this.monster.monsterText = usermessage;
+            this.showMonsterText = true;
+        }
+        else if(messagetype != "monster" && messagetype != "user"){
+            console.error("You need to pass a message string of type monster or user");
+        }
+    },
     checkForHidden() {
       if (!this.isHiddenItems && !this.isHiddenOption) {
         searchBus.$on("searchConducted", data => {
-          this.showText = false;
-          this.userMessage = this.failText;
-          this.showText = true;
+            this.updateStoryMessaging(this.failText, "user");
         });
       }
       //if room has either hidden items, or hidden options allow setup for item/option search to continue
@@ -134,9 +147,7 @@ export default {
         this.hasMonster
       ) {
         this.isFirstVisitOnly = false;
-        this.showMonsterText = false;
-        this.monster.monsterText = this.monster.monsterDeadtext;
-        this.showMonsterText = true;
+        this.updateStoryMessaging(this.monster.monsterDeadtext, "monster");
       }
       //need to lock attack button if monster has been slain in this room
       if (this.$store.state.roomsWithMonstersSlain.includes(this.roomID)) {
@@ -168,27 +179,21 @@ export default {
                 itemID: this.hiddenItem.itemID
               });
               //set the text for message that is revealed
-              this.showText = false;
-              this.userMessage = this.hiddenItem.revealText;
-              this.showText = true;
+              this.updateStoryMessaging(this.hiddenItem.revealText, "user");
             }
             //if it is a hidden option, vs. a hidden item, proceed
             if (this.isHiddenOption) {
               //allow the hidden option(s) button(s) to be revealed
               this.hiddenOption.revealOption = true;
               //set the text for message that is revealed
-              this.showText = false;
-              this.userMessage = this.hiddenOption.revealText;
-              this.showText = true;
+              this.updateStoryMessaging(this.hiddenOption.revealText, "user");
             }
             console.log("found");
           } else {
             //end of 1 rolled closure
             //else, if nothing was found this search
             console.log("notfound");
-            this.showText = false;
-            this.userMessage = this.failText;
-            this.showText = true;
+            this.updateStoryMessaging(this.failText, "user");
           }
         } //end of if found item closure
       }); //end of searchBus closure
@@ -199,9 +204,7 @@ export default {
         this.isFirstVisitOnly = false;
         this.hiddenOption.revealOption = true;
         this.$store.commit("enableSearch", false);
-        this.showText = false;
-        this.userMessage = this.searchDoneMsg;
-        this.showText = true;
+        this.updateStoryMessaging(this.searchDoneMsg, "user");
       } else {
         this.$store.commit("enableSearch", true);
       }
@@ -214,17 +217,13 @@ export default {
     },
     initSlaybus() {
       slayBus.$on("lifeStatus", isSlain => {
-        this.showMonsterText = false;
-        this.monster.monsterText = this.monster.monsterDiedText;
-        this.showMonsterText = true;
+        this.updateStoryMessaging(this.monster.monsterDiedText, "monster");
       });
     },
     initMonster() {
       this.$store.commit("setMonster", this.monster);
       this.$store.state.maxMonsterHitDamage = this.monster.monsterHitDamage;
-      this.showMonsterText = false;
-      this.userMessage = this.monster.monsterText;
-      this.showMonsterText = true;
+      this.updateStoryMessaging(this.monster.monsterText, "monster");
       this.$store.state.monsterRemainingHealth = this.monster.monsterHealth;
       this.$store.state.monster.monstername = this.monster.monsterName;
     },

@@ -245,11 +245,12 @@ export default {
        return Math.floor(Math.random()*(max-min+1)+min);
     },
     updateMonsterApperance(){
-          //determine the percent health remaining
-      let levelFour = this.$store.state.monster.monsterHealth;
-      let levelThree = this.$store.state.monster.monsterHealth * 0.75;
-      let levelTwo = this.$store.state.monster.monsterHealth * 0.5;
-      let levelOne = this.$store.state.monster.monsterHealth * 0.25;
+      //determine the percent health remaining
+      let monsterHealth = this.$store.state.monster.monsterHealth 
+      let levelFour = monsterHealth;
+      let levelThree = monsterHealth * 0.75;
+      let levelTwo = monsterHealth * 0.5;
+      let levelOne = monsterHealth * 0.25;
       let levelZero = 0;
 
       //test current health and set output condition text

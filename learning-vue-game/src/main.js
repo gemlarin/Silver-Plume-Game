@@ -23,10 +23,12 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes,
+  base:'/game/',
   mode: 'history'
 });
 
 export const lifeBus = new Vue();    //bus for damage to player
+export const goldBus = new Vue();    //bus for updating the player gold
 export const manaBus = new Vue();    //bus for mana use
 export const healBus = new Vue();    //bus for healing player
 export const statusBus = new Vue();  //bus to change player status
