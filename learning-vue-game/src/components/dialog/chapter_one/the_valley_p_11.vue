@@ -14,7 +14,7 @@
                     <p v-if="this.isFirstVisitOnly">Looks like you are going to have to teach this elf some manners.</p>
                     <transition name="fade" mode="out-in">
 
-                    <p v-if="showMonsterText == true">{{ monster.monsterText }}</p>
+                    <p class="highlight" v-if="showMonsterText == true">{{ monster.monsterText }}</p>
                     </transition>
                     <transition name="fade" mode="out-in">
                         <p v-if="showText == true">{{ userMessage }}</p>
@@ -33,7 +33,7 @@
                                     </button>
                                 </router-link>
                             </div><!-- option--hidden-container -->
-                         </transition>
+                        </transition>
                     </div><!-- options-nav -->
                 </div>
             </div>
@@ -57,7 +57,7 @@ export default {
       canFleeRoom: true, //****** needs to emit to parent******//
       isFirstVisitOnly: true, //dont touch this. Test against this for text that you only want displayed on a first visit to the room.
       isHiddenItems: true, //set to false if the room has no hidden items //****** needs to emmitt to parent******//
-      isHiddenOption: true, //set to false if the room has hidden path options //****** needs to emmitt to parent******//
+      isHiddenOption: false, //set to false if the room has hidden path options //****** needs to emmitt to parent******//
       hasMonster: true, //set to false if no monster in room
       monster: {
         monsterHitDamage: 4,
@@ -90,6 +90,10 @@ export default {
   metaInfo: {
     titleTemplate: "%s - The Valley"
   },
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxx
+  //WARNING: END OF USER DEFINED OPTIONS
+  //DO NOT EDIT CODE BEYOND HERE
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxx
   computed: {
     isNavActive: function() {
       return (
@@ -98,7 +102,6 @@ export default {
       );
     }
   },
-
   methods: {
     checkIfVisited() {
       //if this room has not previously been visited then allow hidden item/object setup to continue
@@ -129,8 +132,11 @@ export default {
       }
       //if room has either hidden items, or hidden options allow setup for item/option search to continue
       if (this.isHiddenItems || this.isHiddenOption) {
-        this.checkIfVisited();
-        this.initRoom();
+        if(this.isHiddenItems && this.isHiddenOption){
+          console.error('You can have hidden item or hidden option in room, but not both. Disable one option.');
+          this.checkIfVisited();
+          this.initRoom();
+        }
       }
     },
     checkIfMonsterSlain() {
@@ -188,11 +194,11 @@ export default {
               //set the text for message that is revealed
               this.updateStoryMessaging(this.hiddenOption.revealText, "user");
             }
-            console.log("found");
+            //console.log("found");
           } else {
             //end of 1 rolled closure
             //else, if nothing was found this search
-            console.log("notfound");
+            //console.log("notfound");
             this.updateStoryMessaging(this.failText, "user");
           }
         } //end of if found item closure
@@ -202,7 +208,10 @@ export default {
       //-------USE FOR FINAL ROOM LOAD SETUP BELOW HERE--------
       if (this.$store.state.roomsWithItemsFound.includes(this.roomID)) {
         this.isFirstVisitOnly = false;
-        this.hiddenOption.revealOption = true;
+        //prevent hidden option from showing when hidden option is disabled in the options.
+        if(this.isHiddenOption){
+          this.hiddenOption.revealOption = true;
+        }
         this.$store.commit("enableSearch", false);
         this.updateStoryMessaging(this.searchDoneMsg, "user");
       } else {
@@ -253,6 +262,7 @@ export default {
     next();
   },
   created() {
+    this.$store.state.attackEnabled = false;
     this.setRoomMap();
     this.disableAllInputs();
     this.enableFlee();

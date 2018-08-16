@@ -137,6 +137,7 @@ export default {
     },
     fleeRoom(){
         //TODO roll the dice to see if rooom can be fled
+        this.$store.state.fightingEngaged = false;
         this.$store.commit("canFleeRoom", { eat: true });
         //success, flee to previous room
         this.$router.go(-1);
@@ -159,7 +160,7 @@ export default {
         this.$store.commit("updateTurnsLog", { message, isHeal: true });
       }
 
-      if(this.fightEngaged){
+      if(this.$store.state.fightingEngaged){
         this.monsterAttack();
       }
     },
@@ -168,9 +169,7 @@ export default {
       searchBus.$emit("searchConducted", { isSearched: true });
     },
     updateHealth() {
-        if(!this.fightEngaged){
-          this.fightEngaged = true;
-        }
+        this.$store.state.fightingEngaged = true;
         this.monsterAttack();
         this.playerAttack();
         this.updateMonsterApperance();
@@ -309,9 +308,9 @@ export default {
       //dead
       if (this.$store.state.monsterRemainingHealth <= 0) {
         //this guy is toast Batman!
-        var message = this.$store.state.monster.monsterDiedText 
+        var message = this.$store.state.monster.monsterDiedText;
+        this.$store.state.fightingEngaged = false;
         this.$store.commit("updateTurnsLog", { message, isAlert: true });
-
         slayBus.$emit("lifeStatus", { isSlain: true });
 
         //add room to array of roomsWithMonstersSlain

@@ -39,7 +39,8 @@
             },
             created(){
                 this.$store.commit('setOverworldMap', this.overworldMapToDisplay);
-                this.$store.state.disableAllInputs = true;
+                this.$store.state.disableAllInputs = false;
+                this.$store.state.attackEnabled = false;
             }
     }
 </script>

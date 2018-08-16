@@ -28,6 +28,7 @@
                 <div class="col-sm-5 col-md-5">
                     <div class="card--section-avatar">
                         <div class="wrap-avatar">
+                          <div class="dinge"></div>
                             <img class="avatar" :src="require('./../../assets/player-knight.svg')" />
                         </div>
                     </div><!-- /.card--section-avatar -->
@@ -147,18 +148,29 @@ export default {
   display: flex;
 }
 
+.dinge{
+  display:block;
+  background-color:#636363;
+  opacity:.6;
+  height:100%;
+  width:100%;
+  position:absolute;
+  z-index:200;
+  top:0;
+}
+
 .go-wide {
   display: flex;
   margin-left: 8px;
   height: 53px;
   text-shadow: 1px 1px #1b1b1b;
-  font-size: 16px;
+  font-size: 14px;
   justify-content: center;
   flex-grow: 1;
   flex-wrap: nowrap;
   align-items: center;
-  background: url(./../../assets/map-button-bg.png) no-repeat center center;
-  color: #46b3ce;
+  //background: url(./../../assets/map-button-bg.png) no-repeat center center;
+  color: #bbbbbb;
   //-webkit-background-size: cover;
   //-moz-background-size: cover;
   //-o-background-size: cover;
@@ -168,7 +180,7 @@ export default {
   transition: 0.4s;
 }
 .go-wide:hover {
-  color: #73dcf7;
+  color: #fff;
 }
 
 .go-wide:active {
@@ -178,8 +190,8 @@ export default {
 }
 
 .journal{
-    color: #46b3ce;
-    background: url(./../../assets/journal-button-bg.png) no-repeat center center;
+    color: #bbbbbb;
+    //background: url(./../../assets/journal-button-bg.png) no-repeat center center;
     background-size: 290px;
 }
 .card {
@@ -197,7 +209,12 @@ export default {
 }
 .card--section-avatar {
   overflow: hidden;
-  background-color: #4a4a4a;
+  //background-color: #4a4a4a;
+   background: url(./../../assets/playerbackground.gif) no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .temp {
@@ -207,6 +224,10 @@ export default {
 
 .wrap-avatar {
   height: 200px;
+  img {
+    position:relative;
+    z-index:200;
+  }
 }
 .avatar {
   height: 230px;

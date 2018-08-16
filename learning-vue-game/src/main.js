@@ -11,19 +11,14 @@ import Meta from 'vue-meta'
 
 //without this line, CSSPlugin and AttrPlugin may get dropped by your bundler...
 
-
-
-
 Vue.use(BootstrapVue);
 Vue.use(Meta);
 Vue.use(VueRouter);
 
 
-
-
 const router = new VueRouter({
   routes,
-  base:'/game/',
+  //base:'/game/',
   mode: 'history'
 });
 

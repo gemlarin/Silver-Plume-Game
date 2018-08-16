@@ -115,6 +115,7 @@ export const store = new Vuex.Store({
         currentRoom:'',//the room you are currently in
         //searchRoom state data is set automatically from the page view as soon as the page loads
         canFleeRoom:false,
+        fightingEngaged:false,
         searchEnabled:true,
         searchRoom:{
             //if this room actually contains any items
@@ -237,6 +238,9 @@ export const store = new Vuex.Store({
         },
         updateAttackRating (state, attackrating) {
             state.armorrating = attackrating;
+        },
+        updateFightEngaged (state, engaged) {
+            state.fightingEngaged = engaged;
         }
         
     }

@@ -92,7 +92,6 @@ $text-color-light:lightgrey;
   width:100vw;
   height:100vh;
 }
-
 html{
   font-size: 62.5%;
 }
@@ -109,13 +108,10 @@ html{
   //background-color: #f3f2f0;
   //  border-radius: 15px;
 }
-
-
 p{
   font-size:1.8rem;
   display:block;
 }
-
 h1, h2 {
   font-weight: normal;
   margin-bottom:20px;
@@ -147,6 +143,15 @@ li {
 
 a {
   color: #42b983;
+}
+
+.highlight{
+  font-weight:bold;
+  color:#ab4646 !important;
+}
+
+.disabled{
+  display:none;
 }
 
 #options-nav{
