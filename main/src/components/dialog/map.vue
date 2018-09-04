@@ -51,7 +51,7 @@
                 this.$router.go(-1);
             },
             showMap(mapid){
-                var concatpath ="url('/dist/" + mapid + "')";
+                var concatpath ="url('./dist/" + mapid + "')";
                 var element = document.getElementById('map');
                 element.style.backgroundImage = concatpath;
             },

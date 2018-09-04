@@ -127,6 +127,7 @@ export default {
     checkForHidden() {
       if (!this.isHiddenItems && !this.isHiddenOption) {
         searchBus.$on("searchConducted", data => {
+          
             this.updateStoryMessaging(this.failText, "user");
         });
       }
@@ -134,6 +135,8 @@ export default {
       if (this.isHiddenItems || this.isHiddenOption) {
         if(this.isHiddenItems && this.isHiddenOption){
           console.error('You can have hidden item or hidden option in room, but not both. Disable one option.');
+          
+        }else{
           this.checkIfVisited();
           this.initRoom();
         }
@@ -163,6 +166,7 @@ export default {
     roomNotVisited() {
       //Attach to the searchBus. searchConducted is triggered from playeractions.vue when user clicks the search button
       searchBus.$on("searchConducted", data => {
+       
         //if the item has not been found yet in this room then let the search proceed
         if (this.hiddenItem.foundItem == false) {
           //determine if the search was a success or not.
